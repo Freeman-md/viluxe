@@ -4,7 +4,6 @@ module.exports = {
     './src/**/*.{js,jsx,ts,tsx}',
   ],
   theme: {
-    theme: {
       container: {
         center: true,
         padding: {
@@ -21,7 +20,6 @@ module.exports = {
           secondary: '#FF6B6B',
         }
       },
-    },
   },
   plugins: [],
 }
