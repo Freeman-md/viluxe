@@ -24,7 +24,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     };
 
     return (
-        <div className="max-w-sm overflow-hidden border rounded-md">
+        <div className="w-full overflow-hidden border rounded-md">
             <div className="h-80 overflow-hidden">
                 <img className="w-full h-full object-contain" src={image} alt={title} />
             </div>

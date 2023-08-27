@@ -8,17 +8,19 @@ import { ReactComponent as UserCircle } from '../assets/svgs/user-circle.svg'
 const DefaultLayout: React.FC = () => {
     return (
         <>
-            <header className='container flex items-center justify-between py-4'>
-                <Logo className='w-32 sm:w-44' />
+            <header className='fixed top-0 z-10 w-full'>
+                <div className="bg-white container flex items-center justify-between py-4">
+                    <Logo className='w-32 sm:w-44' />
 
-                <div className="flex space-x-4 items-center">
-                    <Heart className="w-7 cursor-pointer transition duration-200 hover:text-primary" />
-                    <ShoppingCart className="w-7 cursor-pointer transition duration-200 hover:text-primary" />
-                    <UserCircle className="w-7 cursor-pointer transition duration-200 hover:text-primary" />
+                    <div className="flex space-x-4 items-center">
+                        <Heart className="w-7 cursor-pointer transition duration-200 hover:text-primary" />
+                        <ShoppingCart className="w-7 cursor-pointer transition duration-200 hover:text-primary" />
+                        <UserCircle className="w-7 cursor-pointer transition duration-200 hover:text-primary" />
+                    </div>
                 </div>
             </header>
 
-            <main>
+            <main className="mt-14 sm:mt-20">
                 <Outlet />
             </main>
         </>
