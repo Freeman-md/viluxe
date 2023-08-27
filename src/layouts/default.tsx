@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom"
+import { NavLink, Outlet } from "react-router-dom"
 
 import { ReactComponent as Logo } from '../assets/svgs/logo.svg'
 import { ReactComponent as ShoppingCart } from '../assets/svgs/shopping-cart.svg'
@@ -10,7 +10,10 @@ const DefaultLayout: React.FC = () => {
         <>
             <header className='fixed top-0 z-10 w-full'>
                 <div className="bg-white container flex items-center justify-between py-4">
+                    
+                <NavLink to="/">
                     <Logo className='w-32 sm:w-44' />
+                </NavLink>
 
                     <div className="flex space-x-4 items-center">
                         <Heart className="w-7 cursor-pointer transition duration-200 hover:text-primary" />

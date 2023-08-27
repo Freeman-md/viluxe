@@ -1,5 +1,7 @@
 import React from 'react';
 import { Product } from '../types';
+import RatingStars from './RatingStars';
+import { Link } from 'react-router-dom';
 
 type ProductCardProps = {
     product: Product;
@@ -8,23 +10,8 @@ type ProductCardProps = {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const { title, image, price, category, rating } = product
 
-    const renderRatingStars = () => {
-        const stars = [];
-        const fullStars = Math.floor(5);
-
-        for (let i = 0; i < fullStars; i++) {
-            stars.push(<span key={i} className="text-yellow-500">★</span>);
-        }
-
-        if (rating.rate - fullStars >= 0.5) {
-            stars.push(<span key="half" className="text-yellow-500">½</span>);
-        }
-
-        return stars;
-    };
-
     return (
-        <div className="w-full overflow-hidden border rounded-md">
+        <Link className="w-full overflow-hidden border rounded-3xl block" to='/products/1'>
             <div className="h-80 overflow-hidden">
                 <img className="w-full h-full object-contain" src={image} alt={title} />
             </div>
@@ -34,11 +21,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 <p className="text-gray-700 text-base mb-2">${price}</p>
                 <div className="flex">
                     <span className="text-gray-700 text-sm">
-                        Rating: {renderRatingStars()}
+                        Rating: <RatingStars rating={rating.rate}></RatingStars>
                     </span>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }
 

@@ -32,7 +32,7 @@ const item = {
   hidden: { opacity: 0, x: -100 },
 }
 
-const Home: React.FC = () => {
+const HomePage: React.FC = () => {
   const categories = DUMMY_CATEGORIES
   const product: Product = {
     "id": 1,
@@ -104,4 +104,4 @@ const Home: React.FC = () => {
   )
 }
 
-export default Home
+export default HomePage

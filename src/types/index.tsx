@@ -10,3 +10,4 @@ export type Product = {
     };
     description?: string;
   }
+  

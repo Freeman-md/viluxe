@@ -21,7 +21,7 @@ const CategoriesList: React.FC<CategoriesListProps> = ({ categories }) => {
     <motion.aside
       initial={false}
       animate={isOpen ? "open" : "closed"}
-      className={`${ isOpen ? 'h-96 pb-8' : 'h-14' } transition duration-200 space-y-4 overflow-hidden sticky top-[4.2rem] sm:pb-20 sm:top-24 sm:h-[85vh] bg-white`}
+      className={`${isOpen ? 'h-96 pb-8' : 'h-14'} transition duration-200 space-y-4 overflow-hidden sticky top-[4.2rem] sm:pb-20 sm:top-24 sm:h-[85vh] bg-white`}
     >
       <motion.button
         whileTap={{ scale: 0.97 }}
@@ -67,8 +67,18 @@ const CategoriesList: React.FC<CategoriesListProps> = ({ categories }) => {
         className="h-80 sm:block sm:h-full overflow-scroll p-2 border rounded-3xl bg-white"
       >
         {
-          categories && categories.map((category, index) => <motion.li key={index} variants={itemVariants}><a className="block py-1.5 px-4 text-lg transition duration-200 hover:bg-primary/20 rounded-3xl hover:text-primary active:text-primary active:font-bold" href={`/${category}`} key={index}>{category}</a></motion.li>)
+          categories?.map((category) => (
+            <motion.li key={category} variants={itemVariants}>
+              <a
+                className="block py-1.5 px-4 text-lg transition duration-200 hover:bg-primary/20 rounded-3xl hover:text-primary active:text-primary active:font-bold"
+                href={`/${category}`}
+              >
+                {category}
+              </a>
+            </motion.li>
+          ))
         }
+
       </motion.ul>
     </motion.aside>
   )
