@@ -22,7 +22,7 @@ const UserProfileLayout = () => {
                 <div className="inline-flex flex-col items-center sm:items-start space-y-4">
                     <h1 className="text-3xl font-semibold">Franklin Daemon</h1>
                     <div>
-                        <span className="bg-green-500 text-white px-2 py-1 rounded">Verified</span>
+                        <span className="bg-primary text-white px-2 py-1 rounded">Verified</span>
                     </div>
                     <div>
                         <button className="btn btn-outline">Edit Profile</button>
