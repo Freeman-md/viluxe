@@ -39,8 +39,8 @@ const UserProfileLayout = () => {
 
                             {({ isActive, isPending }) => (
                                 <div className="flex flex-col items-center space-y-2 w-full">
-                                    <span className={`${isActive ? 'font-semibold' : 'hover:font-medium transition duration-200'} text-xl`}>{link.text}</span>
-                                    { isActive && <div className="w-6 h-0.5 bg-black"></div> }
+                                    <span className={`${isActive ? 'font-semibold text-primary' : 'hover:font-medium transition duration-200'} text-xl`}>{link.text}</span>
+                                    { isActive && <div className="w-6 h-0.5 bg-primary"></div> }
                                 </div>
                             )}
                         </NavLink>)

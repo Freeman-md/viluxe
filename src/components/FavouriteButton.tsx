@@ -9,7 +9,7 @@ type FavouriteButtonProps = {
 
 const FavouriteButton: React.FC<FavouriteButtonProps> = ({ isFavourited, toggleFavourite }) => {
     return <motion.button
-        className="absolute top-2 right-2"
+        className="absolute top-4 right-2"
         initial={{ opacity: 0.6 }}
         whileTap={{ scale: 1.5 }}
         whileInView={{ opacity: 1 }}
