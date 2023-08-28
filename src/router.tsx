@@ -6,8 +6,8 @@ import ProductPage from "./pages/Product";
 import CartPage from "./pages/Cart";
 import WishlistPage from "./pages/Wishlist";
 import UserProfileLayout from "./layouts/UserProfile";
-import Orders from "./pages/user/Orders";
-import BillingAddress from "./pages/user/BillingAddress";
+import OrdersPage from "./pages/user/Orders";
+import BillingAddressPage from "./pages/user/BillingAddress";
 
 const router = createBrowserRouter([
     {
@@ -35,11 +35,11 @@ const router = createBrowserRouter([
                 children: [
                     {
                         path: 'orders',
-                        element: <Orders />
+                        element: <OrdersPage />
                     },
                     {
                         path: 'billing-address',
-                        element: <BillingAddress />
+                        element: <BillingAddressPage />
                     }
                 ]
             }

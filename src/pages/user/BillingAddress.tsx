@@ -1,4 +1,4 @@
-const BillingAddress = () => {
+const BillingAddressPage = () => {
     return (
         <div>
             <h2 className="text-2xl font-semibold">Billing Address</h2>
@@ -6,4 +6,4 @@ const BillingAddress = () => {
     )
 }
 
-export default BillingAddress
+export default BillingAddressPage

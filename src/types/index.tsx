@@ -10,4 +10,11 @@ export type Product = {
     };
     description?: string;
   }
+
+ export type Order = {
+    id: number;
+    date: string;
+    items: Product[];
+    total: number;
+  }
   
