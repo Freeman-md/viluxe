@@ -11,7 +11,7 @@ const DUMMY_CATEGORIES = [
   "Electronics", "Clothing", "Home and Garden", "Sports and Outdoors", "Beauty and Personal Care", "Toys and Games", "Books", "Automotive", "Health and Wellness", "Jewelry", "Pet Supplies", "Food and Beverages", "Furniture", "Office Supplies", "Music and Movies", "Baby Products", "Travel and Luggage", "Fitness and Exercise", "Crafts and Hobbies", "Electrical Appliances"
 ]
 
-const list = {
+const animatedProductList = {
   visible: {
     opacity: 1,
     transition: {
@@ -27,7 +27,7 @@ const list = {
   },
 }
 
-const item = {
+const animatedProductItem = {
   visible: { opacity: 1, x: 0 },
   hidden: { opacity: 0, x: -100 },
 }
@@ -87,9 +87,9 @@ const HomePage: React.FC = () => {
 
         <motion.div initial="hidden"
           animate="visible"
-          variants={list} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+          variants={animatedProductList} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
           {Array.from({ length: 20 }, (_, index) => (
-            <motion.div variants={item} key={index}>
+            <motion.div variants={animatedProductItem} key={index}>
               <ProductCard product={product} />
             </motion.div>
           ))

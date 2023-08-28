@@ -16,7 +16,9 @@ const DefaultLayout: React.FC = () => {
                 </NavLink>
 
                     <div className="flex space-x-4 items-center">
-                        <Heart className="w-7 cursor-pointer transition duration-200 hover:text-primary" />
+                        <NavLink to="/wishlist">
+                            <Heart className="w-7 cursor-pointer transition duration-200 hover:text-primary" />
+                        </NavLink>
                         <NavLink to="/cart">
                             <ShoppingCart className="w-7 cursor-pointer transition duration-200 hover:text-primary" />
                         </NavLink>
