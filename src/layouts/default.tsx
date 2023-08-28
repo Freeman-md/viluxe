@@ -10,10 +10,10 @@ const DefaultLayout: React.FC = () => {
         <>
             <header className='fixed top-0 z-10 w-full'>
                 <div className="bg-white container flex items-center justify-between py-4">
-                    
-                <NavLink to="/">
-                    <Logo className='w-32 sm:w-44' />
-                </NavLink>
+
+                    <NavLink to="/">
+                        <Logo className='w-32 sm:w-44' />
+                    </NavLink>
 
                     <div className="flex space-x-4 items-center">
                         <NavLink to="/wishlist">
@@ -22,7 +22,9 @@ const DefaultLayout: React.FC = () => {
                         <NavLink to="/cart">
                             <ShoppingCart className="w-7 cursor-pointer transition duration-200 hover:text-primary" />
                         </NavLink>
-                        <UserCircle className="w-7 cursor-pointer transition duration-200 hover:text-primary" />
+                        <NavLink to="/user/orders">
+                            <UserCircle className="w-7 cursor-pointer transition duration-200 hover:text-primary" />
+                        </NavLink>
                     </div>
                 </div>
             </header>

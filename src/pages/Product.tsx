@@ -29,7 +29,7 @@ export const ProductPage: React.FC = () => {
       };
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto py-84">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className='h-96 overflow-hidden relative'>
                 <FavouriteButton isFavourited={isFavourite} toggleFavourite={toggleFavouriteHandler} />
@@ -48,7 +48,7 @@ export const ProductPage: React.FC = () => {
 
           <div className='mt-4'>
           <button
-            className="btn"
+            className="btn btn-primary"
             onClick={handleAddToCart}
           >
             Add to Cart
