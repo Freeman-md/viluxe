@@ -6,10 +6,15 @@ import CategoriesList from "../components/CategoriesList"
 import Pagination from "../components/Pagination"
 import ProductCard from "../components/ProductCard"
 import { Product } from "../types"
+import { Await, defer, json, useLoaderData } from "react-router-dom";
+import ProductService from "../api/product-service";
+import { Suspense } from "react";
+import LoadingSpinner from "../components/LoadingSpinner";
 
-const DUMMY_CATEGORIES = [
-  "Electronics", "Clothing", "Home and Garden", "Sports and Outdoors", "Beauty and Personal Care", "Toys and Games", "Books", "Automotive", "Health and Wellness", "Jewelry", "Pet Supplies", "Food and Beverages", "Furniture", "Office Supplies", "Music and Movies", "Baby Products", "Travel and Luggage", "Fitness and Exercise", "Crafts and Hobbies", "Electrical Appliances"
-]
+type HomeLoaderDataProps = {
+  categories: Array<string>,
+  products: Product[]
+}
 
 const animatedProductList = {
   visible: {
@@ -33,24 +38,16 @@ const animatedProductItem = {
 }
 
 const HomePage: React.FC = () => {
-  const categories = DUMMY_CATEGORIES
-  const product: Product = {
-    "id": 1,
-    "title": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
-    "price": 109.95,
-    "description": "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
-    "category": "men's clothing",
-    "image": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-    "rating": {
-      "rate": 3.9,
-      "count": 120
-    }
-  }
+  const { categories, products } = useLoaderData() as HomeLoaderDataProps
 
   return (
     <div className="container py-8 grid sm:grid-cols-3 lg:grid-cols-4 sm:gap-8">
 
-      <CategoriesList categories={categories} />
+      <Suspense fallback={<LoadingSpinner text="Loading categories..." />}>
+        <Await resolve={categories}>
+          <CategoriesList categories={categories} />
+        </Await>
+      </Suspense>
 
       <div className="sm:col-span-2 lg:col-span-3 space-y-4">
 
@@ -83,17 +80,20 @@ const HomePage: React.FC = () => {
           )}
         </Formik>
 
-        <h2 className="text-xl font-medium">20 Products</h2>
+        <h2 className="text-xl font-medium">{products.length} Products</h2>
 
         <motion.div initial="hidden"
           animate="visible"
-          variants={animatedProductList} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-          {Array.from({ length: 20 }, (_, index) => (
-            <motion.div variants={animatedProductItem} key={index}>
-              <ProductCard product={product} />
-            </motion.div>
-          ))
-          }
+          variants={animatedProductList} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full items-stretch">
+          <Suspense fallback={<LoadingSpinner text="Loading products..." />}>
+            <Await resolve={products}>
+              {products.map((product, index) => (
+                <motion.div variants={animatedProductItem} key={product.id} className="h-full">
+                  <ProductCard product={product} />
+                </motion.div>
+              ))}
+            </Await>
+          </Suspense>
         </motion.div>
 
         <Pagination />
@@ -105,3 +105,36 @@ const HomePage: React.FC = () => {
 }
 
 export default HomePage
+
+async function getCategories() {
+  try {
+    return await ProductService.fetchCategories()
+  } catch (e) {
+    throw json(
+      { message: 'Could not fetch categories.' },
+      {
+        status: 500,
+      }
+    );
+  }
+}
+
+async function getProducts() {
+  try {
+    return await ProductService.fetchProducts()
+  } catch (e) {
+    throw json(
+      { message: 'Could not fetch categories.' },
+      {
+        status: 500,
+      }
+    );
+  }
+}
+
+export const loader = async () => {
+  return defer({
+    categories: await getCategories(),
+    products: await getProducts(),
+  })
+}

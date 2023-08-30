@@ -64,13 +64,13 @@ const CategoriesList: React.FC<CategoriesListProps> = ({ categories }) => {
           }
         }}
         style={{ pointerEvents: isOpen ? "auto" : "none" }}
-        className="h-80 sm:block sm:h-full overflow-scroll p-2 border rounded-3xl bg-white"
+        className="h-80 sm:block sm:h-auto overflow-scroll p-2 border rounded-3xl bg-white"
       >
         {
           categories?.map((category) => (
             <motion.li key={category} variants={itemVariants}>
               <a
-                className="block py-1.5 px-4 text-lg transition duration-200 hover:bg-primary/20 rounded-3xl hover:text-primary active:text-primary active:font-bold"
+                className="block py-1.5 px-4 text-lg capitalize transition duration-200 hover:bg-primary/20 rounded-3xl hover:text-primary active:text-primary active:font-bold"
                 href={`/${category}`}
               >
                 {category}

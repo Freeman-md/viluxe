@@ -20,11 +20,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, children }) => {
     }
 
     return (
-        <div className="w-full overflow-hidden border rounded-3xl block relative">
+        <div className="w-full overflow-hidden border rounded-3xl block relative h-full">
             <FavouriteButton isFavourited={isFavourite} toggleFavourite={toggleFavouriteHandler} />
 
-            <Link to='/products/1' className="h-80 overflow-hidden">
-                <img className="w-full h-full object-contain" src={image} alt={title} />
+            <Link to='/products/1' className="h-80 w-full overflow-hidden">
+                <img className="w-full h-80 object-contain" src={image} alt={title} />
             </Link>
             <div className="px-6 py-4">
                 <Link to='/products/1' className="font-bold text-xl mb-2 hover:underline">{title}</Link>
