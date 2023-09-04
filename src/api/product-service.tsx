@@ -24,6 +24,14 @@ class ProductService {
 
         return await response.json()
     }
+
+    static fetchProduct = async (id: number) => {
+        const url = `${this.baseUrl}/products/${id}`
+
+        const response = await fetch(url)
+
+        return await response.json()
+    }
 }
 
 export default ProductService

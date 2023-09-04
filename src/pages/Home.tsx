@@ -184,10 +184,8 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 
   const category = queryParams.get('category')!
 
-  const products = await getProducts(category)
-
   return defer({
     categories: await getCategories(),
-    products
+    products: await getProducts(category)
   })
 }

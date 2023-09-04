@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 
 import DefaultLayout from "./layouts/Default";
 import HomePage, { loader as homeLoader } from "./pages/Home";
-import ProductPage from "./pages/Product";
+import ProductPage, { loader as productLoader } from "./pages/Product";
 import CartPage from "./pages/Cart";
 import WishlistPage from "./pages/Wishlist";
 import UserProfileLayout from "./layouts/UserProfile";
@@ -22,7 +22,8 @@ const router = createBrowserRouter([
             },
             {
                 path: '/products/:id',
-                element: <ProductPage />
+                element: <ProductPage />,
+                loader: productLoader
             },
             {
                 path: '/cart',
