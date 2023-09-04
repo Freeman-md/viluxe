@@ -8,10 +8,12 @@ import WishlistPage from "./pages/Wishlist";
 import UserProfileLayout from "./layouts/UserProfile";
 import OrdersPage from "./pages/user/Orders";
 import BillingAddressPage from "./pages/user/BillingAddress";
+import ErrorPage from "./pages/Error";
 
 const router = createBrowserRouter([
     {
         element: <DefaultLayout />,
+        errorElement: <ErrorPage />,
         children: [
             {
                 path: '/',

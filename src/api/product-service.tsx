@@ -1,3 +1,5 @@
+import { FiltersState } from "../types"
+
 class ProductService {
     static baseUrl = 'https://fakestoreapi.com'
 
@@ -8,7 +10,17 @@ class ProductService {
     }
 
     static fetchProducts = async () => {
-        const response = await fetch(`${this.baseUrl}/products`)
+        const url = `${this.baseUrl}/products`
+
+        const response = await fetch(url)
+
+        return await response.json()
+    }
+
+    static fetchProductsByCategory = async (category: string) => {
+        const url = `${this.baseUrl}/products/category/${category}`
+
+        const response = await fetch(url)
 
         return await response.json()
     }

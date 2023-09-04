@@ -11,17 +11,19 @@ const itemVariants: Variants = {
 };
 
 type CategoriesListProps = {
-  categories: Array<string>
+  categories: Array<string>,
+  selectCategory: (category: string) => void,
+  selectedCategory: string | null,
 }
 
-const CategoriesList: React.FC<CategoriesListProps> = ({ categories }) => {
+const CategoriesList: React.FC<CategoriesListProps> = ({ categories, selectCategory, selectedCategory }) => {
   const [isOpen, setIsOpen] = useState<boolean>(true)
 
   return (
     <motion.aside
-      initial={false}
+initial={false}
       animate={isOpen ? "open" : "closed"}
-      className={`${isOpen ? 'h-96 pb-8' : 'h-14'} transition duration-200 space-y-4 overflow-hidden sticky top-[4.2rem] sm:pb-20 sm:top-24 sm:h-[85vh] bg-white z-20`}
+      className={`${isOpen ? 'h-auto max-h-96 pb-8' : 'h-14'} transition duration-200 space-y-4 overflow-hidden sticky top-[4.2rem] sm:pb-20 sm:top-24 sm:h-[85vh] bg-white z-20`}
     >
       <motion.button
         whileTap={{ scale: 0.97 }}
@@ -64,17 +66,17 @@ const CategoriesList: React.FC<CategoriesListProps> = ({ categories }) => {
           }
         }}
         style={{ pointerEvents: isOpen ? "auto" : "none" }}
-        className="h-80 sm:block sm:h-auto overflow-scroll p-2 border rounded-3xl bg-white"
+        className="max-h-80 sm:block h-auto overflow-scroll p-2 border rounded-3xl bg-white space-y-2"
       >
         {
           categories?.map((category) => (
             <motion.li key={category} variants={itemVariants}>
-              <a
-                className="block py-1.5 px-4 text-lg capitalize transition duration-200 hover:bg-primary/20 rounded-3xl hover:text-primary active:text-primary active:font-bold"
-                href={`/${category}`}
+              <button
+                onClick={() => selectCategory(category)}
+                className={`w-full text-left block py-1.5 px-4 text-lg capitalize transition duration-200 rounded-3xl active:font-bold ${selectedCategory === category ? 'bg-primary/20 text-primary font-semibold' : 'hover:bg-primary/20 hover:text-primary active:text-primary'}`}
               >
                 {category}
-              </a>
+              </button>
             </motion.li>
           ))
         }
