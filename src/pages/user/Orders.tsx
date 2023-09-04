@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Order, Product } from '../../types';
+import { Order } from '../../types';
 import { Link } from 'react-router-dom';
 
 type OrderCardProps = {

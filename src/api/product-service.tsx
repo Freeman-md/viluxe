@@ -1,5 +1,3 @@
-import { FiltersState } from "../types"
-
 class ProductService {
     static baseUrl = 'https://fakestoreapi.com'
 
