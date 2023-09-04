@@ -5,7 +5,7 @@ import { ReactComponent as ShoppingCart } from '../assets/svgs/shopping-cart.svg
 import { ReactComponent as Heart } from '../assets/svgs/heart.svg'
 import { ReactComponent as UserCircle } from '../assets/svgs/user-circle.svg'
 
-const DefaultLayout: React.FC = () => {
+const DefaultLayout = () => {
     return (
         <>
             <header className='fixed top-0 z-10 w-full'>

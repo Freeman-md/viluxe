@@ -1,11 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import DefaultLayout from "./layouts/Default";
+import DefaultLayout from "./layouts/DefaultLayout";
+import UserProfileLayout from "./layouts/UserProfile";
 import HomePage, { loader as homeLoader } from "./pages/Home";
 import ProductPage, { loader as productLoader } from "./pages/Product";
 import CartPage from "./pages/Cart";
 import WishlistPage from "./pages/Wishlist";
-import UserProfileLayout from "./layouts/UserProfile";
 import OrdersPage from "./pages/user/Orders";
 import BillingAddressPage from "./pages/user/BillingAddress";
 import ErrorPage from "./pages/Error";
