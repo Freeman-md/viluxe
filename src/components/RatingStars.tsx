@@ -1,22 +1,25 @@
+import React from 'react';
+
+import { ReactComponent as StarSolid } from '../assets/svgs/star-solid.svg'
+import { ReactComponent as StarOutline } from '../assets/svgs/star-outline.svg'
+
 type RatingStarsProps = {
-    rating: number
-}
+    rating: number;
+};
 
-const RatingStars : React.FC<RatingStarsProps> = ({ rating }) => {
+const RatingStars: React.FC<RatingStarsProps> = ({ rating }) => {
     const stars = [];
-    const fullStars = Math.floor(5);
+    const fullStars = Math.floor(rating);
 
-    for (let i = 0; i < fullStars; i++) {
-        stars.push(<span key={i} className="text-yellow-500">★</span>);
+    for (let i = 1; i <= 5; i++) {
+        if (i <= fullStars) {
+            stars.push(<StarSolid className='w-4 fill-primary' />)
+        } else {
+            stars.push(<StarOutline className='w-4 stroke-primary' />)
+        }
     }
 
-    if (rating - fullStars >= 0.5) {
-        stars.push(<span key="half" className="text-yellow-500">½</span>);
-    }
+    return <div className='inline-flex items-center'>{stars}</div>;
+};
 
-    return <>
-        {stars}
-    </>;
-}
-
-export default RatingStars
+export default RatingStars;

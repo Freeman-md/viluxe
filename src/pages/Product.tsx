@@ -40,7 +40,7 @@ export const ProductPage: React.FC = () => {
                                 <h1 className="text-2xl font-semibold mb-2">{title}</h1>
                                 <p className="text-gray-600">{category}</p>
                                 <p className="mt-2 text-xl font-semibold text-primary">${price.toFixed(2)}</p>
-                                <div className="mt-2">
+                                <div className="mt-2 flex items-center">
                                     <RatingStars rating={rating.rate} />
                                     <span className="text-gray-500 ml-1">{rating.count} reviews</span>
                                 </div>

@@ -30,10 +30,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, children }) => {
                 <Link to={`/products/${id}`} className="font-bold text-xl mb-2 hover:underline">{title}</Link>
                 <p className="text-gray-700 text-base mb-2">Category: {category}</p>
                 <p className="text-gray-700 text-base mb-2">${price}</p>
-                <div className="flex">
-                    <span className="text-gray-700 text-sm">
-                        Rating: <RatingStars rating={rating.rate}></RatingStars>
-                    </span>
+                <div className="flex text-gray-700 text-sm items-center space-x-1">
+                        <span>Rating: </span> 
+                        <RatingStars rating={rating.rate}></RatingStars>
                 </div>
 
                 {children}
