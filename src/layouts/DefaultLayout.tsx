@@ -16,14 +16,17 @@ const DefaultLayout = () => {
                     </NavLink>
 
                     <div className="flex space-x-4 items-center">
-                        <NavLink to="/wishlist">
-                            <Heart className="w-7 cursor-pointer transition duration-200 hover:text-primary" />
-                        </NavLink>
-                        <NavLink to="/cart">
-                            <ShoppingCart className="w-7 cursor-pointer transition duration-200 hover:text-primary" />
-                        </NavLink>
-                        <NavLink to="/user/orders">
+                        <NavLink to="/user/orders" className={({ isActive }) => `flex flex-col items-center ${isActive ? 'text-primary' : ''}`}>
                             <UserCircle className="w-7 cursor-pointer transition duration-200 hover:text-primary" />
+                            <span>Account</span>
+                        </NavLink>
+                        <NavLink to="/wishlist" className={({ isActive }) => `flex flex-col items-center ${isActive ? 'text-primary' : ''}`}>
+                            <Heart className="w-7 cursor-pointer transition duration-200 hover:text-primary" />
+                            <span>Wishlist</span>
+                        </NavLink>
+                        <NavLink to="/cart" className={({ isActive }) => `flex flex-col items-center ${isActive ? 'text-primary' : ''}`}>
+                            <ShoppingCart className="w-7 cursor-pointer transition duration-200 hover:text-primary" />
+                            <span>Trolley</span>
                         </NavLink>
                     </div>
                 </div>
