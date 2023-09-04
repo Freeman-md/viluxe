@@ -1,12 +1,13 @@
-import { ChangeEvent, Suspense, useEffect, useReducer, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { Await, LoaderFunctionArgs, defer, json, useFetcher, useLoaderData } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import CategoriesList from "../components/CategoriesList"
 import ProductCard from "../components/ProductCard"
-import { FiltersAction, FiltersState, Product } from "../types"
 import ProductService from "../api/product-service";
 import LoadingSpinner from "../components/LoadingSpinner";
+import useProductFilters from "../hooks/useProductFilters";
+import { Product } from "../types";
 
 type HomeLoaderDataProps = {
   categories: Array<string>,
@@ -34,123 +35,46 @@ const animatedProductItem = {
   hidden: { opacity: 0, x: -100 },
 }
 
-const filtersState: FiltersState = {
-  selectedCategory: null,
-  searchText: null,
-  sortOption: null,
-}
-
-const filtersReducer = (state: FiltersState, action: FiltersAction) => {
-  switch (action.type) {
-    case 'SET_CATEGORY':
-      return {
-        ...state,
-        selectedCategory: action.payload.selectedCategory,
-      }
-    case 'SET_SEARCH_TEXT':
-      return {
-        ...state,
-        searchText: action.payload.searchText,
-      }
-    case 'SET_SORT_OPTION':
-      return {
-        ...state,
-        sortOption: action.payload.sortOption,
-      }
-
-    default:
-      return state
-  }
-}
-
-const sortOptions = [
-  {
-    text: 'Alphabetical (A - Z)',
-    value: 'asc'
-  },
-  {
-    text: 'Alphabetical (Z - A)',
-    value: 'desc'
-  },
-  {
-    text: 'Price (High to Low)',
-    value: 'price'
-  },
-  {
-    text: 'Price (Low to High)',
-    value: '-price'
-  },
-]
-
 const HomePage: React.FC = () => {
   const fetcher = useFetcher()
 
   const { categories, products } = useLoaderData() as HomeLoaderDataProps
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
-  const [filters, dispatchFilters] = useReducer(filtersReducer, filtersState)
+
+  const { filters, sortOptions, selectCategoryHandler, searchTextOnChangeHandler, sortOptionOnChangeHandler } = useProductFilters()
 
   let prevSelectedCategory = useRef<string | null>(null);
 
-  const selectCategoryHandler = (category: string) => {
-    dispatchFilters({
-      type: 'SET_CATEGORY',
-      payload: {
-        ...filters,
-        selectedCategory: category
-      }
-    })
-  }
-
-  const searchTextOnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatchFilters({
-      type: 'SET_SEARCH_TEXT',
-      payload: {
-        ...filters,
-        searchText: e.target.value
-      }
-    })
-  }
-
-  const sortOptionOnChangeHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-    dispatchFilters({
-      type: 'SET_SORT_OPTION',
-      payload: {
-        ...filters,
-        sortOption: e.target.value
-      }
-    })
-  }
-
   useEffect(() => {
     const { selectedCategory, searchText, sortOption } = filters;
-  
+
     // Check if selectedCategory changed
     if (selectedCategory !== prevSelectedCategory.current) {
       const params = new URLSearchParams();
       if (selectedCategory) params.set('category', selectedCategory);
-  
+
       const url = `/?${params.toString()}`;
       prevSelectedCategory.current = selectedCategory;
-  
+
       if (fetcher.state === 'idle' && params.size !== 0) {
         fetcher.load(url);
       }
     }
-  
+
     // Combine and apply filters and sorting
     let modifiedProducts = [...products]; // Create a copy to avoid mutating the original array
-  
+
     if (fetcher.data?.products) {
       modifiedProducts = fetcher.data?.products;
     }
-  
+
     if (searchText) {
       const lowerCaseSearchText = searchText.toLowerCase();
       modifiedProducts = modifiedProducts.filter((product) =>
         product.title.toLowerCase().includes(lowerCaseSearchText)
       );
     }
-  
+
     if (sortOption) {
       switch (sortOption) {
         case 'asc':
@@ -169,12 +93,12 @@ const HomePage: React.FC = () => {
           break;
       }
     }
-  
+
     // Set the filtered products
     setFilteredProducts(modifiedProducts);
   }, [filters, fetcher, prevSelectedCategory, products]);
-  
-  
+
+
 
   return (
     <div className="container py-8 grid sm:grid-cols-3 lg:grid-cols-4 sm:gap-8">
