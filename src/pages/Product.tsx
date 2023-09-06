@@ -6,7 +6,7 @@ import { Await, LoaderFunctionArgs, defer, json, useLoaderData } from 'react-rou
 import ProductService from '../api/product-service';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks';
-import { toggleItemInWishlist } from '../store/shopping';
+import { toggleItemInCart, toggleItemInWishlist } from '../store/shopping';
 
 type ProductLoaderDataProps = {
     product: Product
@@ -15,10 +15,14 @@ type ProductLoaderDataProps = {
 export const ProductPage: React.FC = () => {
     const dispatch = useAppDispatch()
 
+    const cartItems = useAppSelector(state => state.shopping.cart)
+
     const { product } = useLoaderData() as ProductLoaderDataProps
     const { title, category, price, image, description, rating } = product
 
     const isInWishlist = useAppSelector(state => state.shopping.wishlist.some(item => item.id === product.id))
+
+    const isItemInCart = (product: Product) => cartItems.find(item => item.id === product.id)
 
     const toggleFavouriteHandler = () => {
         dispatch(
@@ -28,10 +32,13 @@ export const ProductPage: React.FC = () => {
         )
     }
 
-    const handleAddToCart = () => {
-        // Implement add to cart logic here
-        console.log(`Added "${title}" to the cart`);
-    };
+    const toggleItemInCartHandler = (product: Product) => {
+        dispatch(
+            toggleItemInCart({
+                item: product
+            })
+        )
+    }
 
     return (
         <>
@@ -55,12 +62,17 @@ export const ProductPage: React.FC = () => {
                                 <p className="mt-4">{description}</p>
 
                                 <div className='mt-4'>
-                                    <button
-                                        className="btn btn-primary"
-                                        onClick={handleAddToCart}
-                                    >
-                                        Add to Cart
-                                    </button>
+                                    {(() => {
+                                        const isProductInCart = isItemInCart(product);
+                                        return (
+                                            <button
+                                                className={`btn ${isProductInCart ? 'btn-outline' : 'btn-primary'}`}
+                                                onClick={() => toggleItemInCartHandler(product)}
+                                            >
+                                                {isProductInCart ? 'Remove from cart' : 'Add to cart'}
+                                            </button>
+                                        );
+                                    })()}
                                 </div>
                             </div>
                         </div>

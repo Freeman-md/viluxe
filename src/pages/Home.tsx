@@ -9,7 +9,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import useProductFilters from "../hooks/useProductFilters";
 import { Product } from "../types";
 import { useAppDispatch, useAppSelector } from "../hooks/useReduxHooks";
-import { toggleItemInWishlist } from "../store/shopping";
+import { toggleItemInCart, toggleItemInWishlist } from "../store/shopping";
 
 type HomeLoaderDataProps = {
   categories: Array<string>,
@@ -41,6 +41,7 @@ const HomePage: React.FC = () => {
   const fetcher = useFetcher()
   const dispatch = useAppDispatch()
 
+  const cartItems = useAppSelector(state => state.shopping.cart)
   const wishlistItems = useAppSelector(state => state.shopping.wishlist)
 
   const { categories, products } = useLoaderData() as HomeLoaderDataProps
@@ -115,10 +116,19 @@ const HomePage: React.FC = () => {
     setFilteredProducts(modifiedProducts);
   }, [filters, fetcher, prevSelectedCategory, products, wishlistItemIds]);
 
+  const isItemInCart = (product: Product) => cartItems.find(item => item.id === product.id)
 
   const toggleFavouriteHandler = (product: Product) => {
     dispatch(
       toggleItemInWishlist({
+        item: product
+      })
+    )
+  }
+
+  const toggleItemInCartHandler = (product: Product) => {
+    dispatch(
+      toggleItemInCart({
         item: product
       })
     )
@@ -159,7 +169,20 @@ const HomePage: React.FC = () => {
             <Await resolve={products}>
               {filteredProducts?.map((product: Product) => (
                 <motion.div variants={animatedProductItem} key={product.id} className="h-full">
-                  <ProductCard product={product} onToggleFavorite={toggleFavouriteHandler.bind(null, product)} />
+                  <ProductCard product={product} onToggleFavorite={toggleFavouriteHandler.bind(null, product)}>
+                    {(() => {
+                      const isProductInCart = isItemInCart(product);
+                      return (
+                        <button
+                          className={`btn w-full mt-4 ${isProductInCart ? 'btn-outline' : 'btn-primary'}`}
+                          onClick={() => toggleItemInCartHandler(product)}
+                        >
+                          {isProductInCart ? 'Remove from cart' : 'Add to cart'}
+                        </button>
+                      );
+                    })()}
+                  </ProductCard>
+
                 </motion.div>
               ))}
             </Await>

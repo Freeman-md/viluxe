@@ -21,7 +21,7 @@ const CategoriesList: React.FC<CategoriesListProps> = ({ categories, selectCateg
 
   return (
     <motion.aside
-initial={false}
+      initial={false}
       animate={isOpen ? "open" : "closed"}
       className={`${isOpen ? 'h-auto max-h-96 pb-8' : 'h-14'} transition duration-200 space-y-4 overflow-hidden sticky top-[4.2rem] sm:pb-20 sm:top-24 sm:h-[85vh] bg-white z-20`}
     >
@@ -69,13 +69,13 @@ initial={false}
         className="max-h-80 sm:block h-auto overflow-scroll p-2 border rounded-3xl bg-white space-y-2"
       >
         <motion.li variants={itemVariants}>
-              <button
-                onClick={() => selectCategory('')}
-                className="w-full text-left block py-1.5 px-4 text-lg capitalize transition duration-200 rounded-3xl active:font-bold hover:bg-primary/20 hover:text-primary active:text-primary"
-              >
-                All Categories
-              </button>
-            </motion.li>
+          <button
+            onClick={() => selectCategory('')}
+            className="w-full text-left block py-1.5 px-4 text-lg capitalize transition duration-200 rounded-3xl active:font-bold hover:bg-primary/20 hover:text-primary active:text-primary"
+          >
+            All Categories
+          </button>
+        </motion.li>
         {
           categories?.map((category) => (
             <motion.li key={category} variants={itemVariants}>
