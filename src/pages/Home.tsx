@@ -49,8 +49,6 @@ const HomePage: React.FC = () => {
 
   const { filters, sortOptions, selectCategoryHandler, searchTextOnChangeHandler, sortOptionOnChangeHandler } = useProductFilters()
 
-  const wishlistItemIds = useMemo(() => new Set(wishlistItems.map(item => item.id)), [wishlistItems]);
-
   let prevSelectedCategory = useRef<string | null>(null);
 
   useEffect(() => {
@@ -107,16 +105,12 @@ const HomePage: React.FC = () => {
       }
     }
 
-    modifiedProducts = modifiedProducts.map((product) => ({
-      ...product,
-      isInWishlist: wishlistItemIds.has(product.id),
-    }));
-
     // Set the filtered products
     setFilteredProducts(modifiedProducts);
-  }, [filters, fetcher, prevSelectedCategory, products, wishlistItemIds]);
+  }, [filters, fetcher, prevSelectedCategory, products]);
 
-  const isItemInCart = (product: Product) => cartItems.find(item => item.id === product.id)
+  const isItemInCart = (product: Product): boolean => cartItems.some(item => item.id === product.id)
+  const isItemInWishlist = (product: Product): boolean => wishlistItems.some(item => item.id === product.id)
 
   const toggleFavouriteHandler = (product: Product) => {
     dispatch(
@@ -169,7 +163,11 @@ const HomePage: React.FC = () => {
             <Await resolve={products}>
               {filteredProducts?.map((product: Product) => (
                 <motion.div variants={animatedProductItem} key={product.id} className="h-full">
-                  <ProductCard product={product} onToggleFavorite={toggleFavouriteHandler.bind(null, product)}>
+                  <ProductCard
+                    product={product}
+                    isItemInWishlist={isItemInWishlist(product)} // Pass the boolean value directly
+                    onToggleFavorite={toggleFavouriteHandler.bind(null, product)}
+                  >
                     {(() => {
                       const isProductInCart = isItemInCart(product);
                       return (
@@ -182,6 +180,7 @@ const HomePage: React.FC = () => {
                       );
                     })()}
                   </ProductCard>
+
 
                 </motion.div>
               ))}

@@ -31,7 +31,9 @@ const animatedProductItem = {
 
 const WishlistPage: React.FC = () => {
     const dispatch = useAppDispatch()
-    const wishlistItems = useAppSelector(state => state.shopping.wishlist.map(item => ({ ...item, isInWishlist: true })))
+    const wishlistItems = useAppSelector(state => state.shopping.wishlist)
+
+    const isItemInWishlist = (product: Product): boolean => wishlistItems.some(item => item.id === product.id)
 
     const toggleFavouriteHandler = (product: Product) => {
         setTimeout(() => {
@@ -54,7 +56,7 @@ const WishlistPage: React.FC = () => {
                     <AnimatePresence>
                         {wishlistItems.map((item) => (
                             <motion.div variants={animatedProductItem} exit={{ opacity: 0 }} key={item.id}>
-                                <ProductCard key={item.id} product={item} onToggleFavorite={toggleFavouriteHandler.bind(null, item)}></ProductCard>
+                                <ProductCard key={item.id} product={item} isItemInWishlist={isItemInWishlist(item)} onToggleFavorite={toggleFavouriteHandler.bind(null, item)}></ProductCard>
                             </motion.div>
                         ))}
                     </AnimatePresence>

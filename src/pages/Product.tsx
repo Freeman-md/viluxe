@@ -22,7 +22,7 @@ export const ProductPage: React.FC = () => {
 
     const isInWishlist = useAppSelector(state => state.shopping.wishlist.some(item => item.id === product.id))
 
-    const isItemInCart = (product: Product) => cartItems.find(item => item.id === product.id)
+    const isItemInCart = (product: Product) : boolean => cartItems.some(item => item.id === product.id)
 
     const toggleFavouriteHandler = () => {
         dispatch(

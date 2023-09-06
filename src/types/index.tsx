@@ -11,7 +11,6 @@ export type Product = {
     count: number
   };
   description?: string;
-  isInWishlist?: boolean
 }
 
 export type Order = {
