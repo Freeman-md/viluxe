@@ -68,6 +68,14 @@ initial={false}
         style={{ pointerEvents: isOpen ? "auto" : "none" }}
         className="max-h-80 sm:block h-auto overflow-scroll p-2 border rounded-3xl bg-white space-y-2"
       >
+        <motion.li variants={itemVariants}>
+              <button
+                onClick={() => selectCategory('')}
+                className="w-full text-left block py-1.5 px-4 text-lg capitalize transition duration-200 rounded-3xl active:font-bold hover:bg-primary/20 hover:text-primary active:text-primary"
+              >
+                All Categories
+              </button>
+            </motion.li>
         {
           categories?.map((category) => (
             <motion.li key={category} variants={itemVariants}>

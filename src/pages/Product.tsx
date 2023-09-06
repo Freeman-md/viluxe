@@ -5,19 +5,27 @@ import FavouriteButton from '../components/FavouriteButton';
 import { Await, LoaderFunctionArgs, defer, json, useLoaderData } from 'react-router-dom';
 import ProductService from '../api/product-service';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks';
+import { toggleItemInWishlist } from '../store/shopping';
 
 type ProductLoaderDataProps = {
     product: Product
 }
 
 export const ProductPage: React.FC = () => {
+    const dispatch = useAppDispatch()
+
     const { product } = useLoaderData() as ProductLoaderDataProps
     const { title, category, price, image, description, rating } = product
 
-    const [isFavourite, setIsFavourite] = useState(false)
+    const isInWishlist = useAppSelector(state => state.shopping.wishlist.some(item => item.id === product.id))
 
     const toggleFavouriteHandler = () => {
-        setIsFavourite(!isFavourite);
+        dispatch(
+            toggleItemInWishlist({
+                item: product
+            })
+        )
     }
 
     const handleAddToCart = () => {
@@ -32,7 +40,7 @@ export const ProductPage: React.FC = () => {
                     <div className="container mx-auto py-8">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className='h-96 overflow-hidden relative'>
-                                <FavouriteButton isFavourited={isFavourite} toggleFavourite={toggleFavouriteHandler} />
+                                <FavouriteButton isFavourited={isInWishlist} toggleFavourite={toggleFavouriteHandler} />
 
                                 <img src={image} alt={title} className="w-full h-full object-contain" />
                             </div>

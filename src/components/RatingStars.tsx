@@ -13,9 +13,9 @@ const RatingStars: React.FC<RatingStarsProps> = ({ rating }) => {
 
     for (let i = 1; i <= 5; i++) {
         if (i <= fullStars) {
-            stars.push(<StarSolid className='w-4 fill-primary' />)
+            stars.push(<StarSolid key={i} className='w-4 fill-primary' />)
         } else {
-            stars.push(<StarOutline className='w-4 stroke-primary' />)
+            stars.push(<StarOutline key={i} className='w-4 stroke-primary' />)
         }
     }
 

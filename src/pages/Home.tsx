@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Await, LoaderFunctionArgs, defer, json, useFetcher, useLoaderData } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -8,6 +8,8 @@ import ProductService from "../api/product-service";
 import LoadingSpinner from "../components/LoadingSpinner";
 import useProductFilters from "../hooks/useProductFilters";
 import { Product } from "../types";
+import { useAppDispatch, useAppSelector } from "../hooks/useReduxHooks";
+import { toggleItemInWishlist } from "../store/shopping";
 
 type HomeLoaderDataProps = {
   categories: Array<string>,
@@ -37,11 +39,16 @@ const animatedProductItem = {
 
 const HomePage: React.FC = () => {
   const fetcher = useFetcher()
+  const dispatch = useAppDispatch()
+
+  const wishlistItems = useAppSelector(state => state.shopping.wishlist)
 
   const { categories, products } = useLoaderData() as HomeLoaderDataProps
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
 
   const { filters, sortOptions, selectCategoryHandler, searchTextOnChangeHandler, sortOptionOnChangeHandler } = useProductFilters()
+
+  const wishlistItemIds = useMemo(() => new Set(wishlistItems.map(item => item.id)), [wishlistItems]);
 
   let prevSelectedCategory = useRef<string | null>(null);
 
@@ -50,13 +57,18 @@ const HomePage: React.FC = () => {
 
     // Check if selectedCategory changed
     if (selectedCategory !== prevSelectedCategory.current) {
-      const params = new URLSearchParams();
-      if (selectedCategory) params.set('category', selectedCategory);
-
-      const url = `/?${params.toString()}`;
       prevSelectedCategory.current = selectedCategory;
 
-      if (fetcher.state === 'idle' && params.size !== 0) {
+      const params = new URLSearchParams();
+
+      if (selectedCategory !== '') {
+        params.set('category', selectedCategory!);
+      }
+
+      const queryParams = params.toString();
+      const url = queryParams ? `/?${queryParams}` : '/';
+
+      if (fetcher.state === 'idle') {
         fetcher.load(url);
       }
     }
@@ -94,11 +106,23 @@ const HomePage: React.FC = () => {
       }
     }
 
+    modifiedProducts = modifiedProducts.map((product) => ({
+      ...product,
+      isInWishlist: wishlistItemIds.has(product.id),
+    }));
+
     // Set the filtered products
     setFilteredProducts(modifiedProducts);
-  }, [filters, fetcher, prevSelectedCategory, products]);
+  }, [filters, fetcher, prevSelectedCategory, products, wishlistItemIds]);
 
 
+  const toggleFavouriteHandler = (product: Product) => {
+    dispatch(
+      toggleItemInWishlist({
+        item: product
+      })
+    )
+  }
 
   return (
     <div className="container py-8 grid sm:grid-cols-3 lg:grid-cols-4 sm:gap-8">
@@ -135,7 +159,7 @@ const HomePage: React.FC = () => {
             <Await resolve={products}>
               {filteredProducts?.map((product: Product) => (
                 <motion.div variants={animatedProductItem} key={product.id} className="h-full">
-                  <ProductCard product={product} />
+                  <ProductCard product={product} onToggleFavorite={toggleFavouriteHandler.bind(null, product)} />
                 </motion.div>
               ))}
             </Await>

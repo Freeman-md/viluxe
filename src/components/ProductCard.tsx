@@ -7,21 +7,16 @@ import FavouriteButton from './FavouriteButton';
 
 type ProductCardProps = {
     product: Product;
+    onToggleFavorite: () => void;
     children?: ReactNode;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, children }) => {
-    const [isFavourite, setIsFavourite] = useState(false)
-
-    const { id, title, image, price, category, rating } = product
-
-    const toggleFavouriteHandler = () => {
-        setIsFavourite(!isFavourite);
-    }
+const ProductCard: React.FC<ProductCardProps> = ({ product, onToggleFavorite, children }) => {
+    const { id, title, image, price, category, rating, isInWishlist } = product
 
     return (
         <div className="w-full overflow-hidden border rounded-3xl block relative h-full">
-            <FavouriteButton isFavourited={isFavourite} toggleFavourite={toggleFavouriteHandler} />
+            <FavouriteButton isFavourited={isInWishlist} toggleFavourite={onToggleFavorite} />
 
             <Link to={`/products/${id}`} className="h-80 w-full overflow-hidden">
                 <img className="w-full h-80 object-contain" src={image} alt={title} />

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ReactComponent as Heart } from '../assets/svgs/heart.svg'
 
 type FavouriteButtonProps = {
-    isFavourited: boolean;
+    isFavourited?: boolean;
     toggleFavourite: () => void
 }
 
