@@ -2,6 +2,7 @@ import React from 'react';
 import { Product } from '../types';
 import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks';
 import { toggleItemInCart } from '../store/shopping';
+import Empty from '../components/Empty';
 
 type CartItemProps = {
   product: Product;
@@ -43,7 +44,7 @@ const CartPage: React.FC = () => {
     <div className="container mx-auto py-8">
       <h1 className="text-2xl font-semibold mb-4">Your Cart</h1>
       {cartItems.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <Empty text='Your cart is empty!' />
       ) : (
         <div className="space-y-4">
           <div className="sticky top-[4.2rem] sm:top-20 flex items-center justify-between bg-white py-2">
