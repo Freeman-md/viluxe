@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom"
+import { AnimatePresence, motion } from "framer-motion";
 
 import { ReactComponent as Logo } from '../assets/svgs/logo.svg'
 import { ReactComponent as ShoppingCart } from '../assets/svgs/shopping-cart.svg'
@@ -31,17 +32,31 @@ const DefaultLayout = () => {
                             <Heart className="w-7 cursor-pointer transition duration-200 hover:text-primary" />
                             <span>Wishlist</span>
 
-                            <Badge type={BadgeType.CIRCULAR} classes="absolute -top-2 right-1 !w-5 !h-5 !text-sm">
-                                { noOfItemsInWishlist }
-                            </Badge>
+                            <AnimatePresence>
+                                {
+                                    !!noOfItemsInWishlist && <motion.div initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                                        <Badge type={BadgeType.CIRCULAR} classes="absolute -top-2 right-1 !w-5 !h-5 !text-sm">
+                                            {noOfItemsInWishlist}
+                                        </Badge>
+                                    </motion.div>
+                                }
+                            </AnimatePresence>
                         </NavLink>
                         <NavLink to="/cart" className={({ isActive }) => `relative flex flex-col items-center ${isActive ? 'text-primary' : ''}`}>
                             <ShoppingCart className="w-7 cursor-pointer transition duration-200 hover:text-primary" />
                             <span>Trolley</span>
 
-                            <Badge type={BadgeType.CIRCULAR} classes="absolute -top-2 right-1 !w-5 !h-5 !text-sm">
-                                { noOfItemsInCart }
-                            </Badge>
+                            <AnimatePresence>
+                                {
+                                    !!noOfItemsInCart && <motion.div initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                                        <Badge type={BadgeType.CIRCULAR} classes="absolute -top-2 right-1 !w-5 !h-5 !text-sm">
+                                            {noOfItemsInCart}
+                                        </Badge>
+                                    </motion.div>
+                                }
+                            </AnimatePresence>
                         </NavLink>
                     </div>
                 </div>
