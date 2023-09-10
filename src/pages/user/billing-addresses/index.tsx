@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { BillingAddress } from '../../../types';
 
 import { ReactComponent as Trash } from '../../../assets/svgs/trash.svg'
 import { ReactComponent as Pencil } from '../../../assets/svgs/pencil.svg'
 import { Link } from 'react-router-dom';
+import BillingAddress from '../../../models/billing-address';
 
-const billingAddresses: BillingAddress[] = [
+const billingAddresses = [
     {
         id: 1,
         firstName: 'John',
@@ -65,7 +65,7 @@ const billingAddresses: BillingAddress[] = [
 
 
 const BillingAddressListPage = () => {
-    const [addresses, setAddresses] = useState(billingAddresses);
+    const [addresses, setAddresses] = useState<BillingAddress[]>(billingAddresses.map(billingAddress => BillingAddress.fromJson(billingAddress)));
 
     const handleDelete = (id: number) => {
         // Implement logic to delete the selected address from the list
@@ -91,7 +91,7 @@ const BillingAddressListPage = () => {
                         <h2 className="text-xl font-semibold mb-2">{`${address.firstName} ${address.lastName}`}</h2>
                         <p className="text-gray-600 mb-2">{address.address}</p>
                         <p className="text-gray-600 mb-2">{`${address.city}, ${address.country}, ${address.postalCode}`}</p>
-                        <p className="text-gray-600 mb-2">{`Phone: ${address.number}`}</p>
+                        <p className="text-gray-600 mb-2">{`Phone: ${address.phone}`}</p>
                         <p className="text-gray-600 mb-2">{`Email: ${address.email}`}</p>
                         <div className="flex space-x-2 justify-end text-primary">
                             <button onClick={() => console.log('handle events')}>

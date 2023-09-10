@@ -7,8 +7,8 @@ import ProductPage, { loader as productLoader } from "./pages/Product";
 import CartPage from "./pages/Cart";
 import WishlistPage from "./pages/Wishlist";
 import OrdersPage from "./pages/user/Orders";
-import BillingAddressListPage from "./pages/user/billing-address/index";
-import BillingAddressCreatePage from "./pages/user/billing-address/create";
+import BillingAddressListPage from "./pages/user/billing-addresses/index";
+import BillingAddressCreatePage, { action as createBillingAddressAction } from "./pages/user/billing-addresses/create";
 import ErrorPage from "./pages/Error";
 
 const router = createBrowserRouter([
@@ -43,7 +43,7 @@ const router = createBrowserRouter([
                         element: <OrdersPage />
                     },
                     {
-                        path: 'billing-address/',
+                        path: 'billing-addresses/',
                         children: [
                             {
                                 index: true,
@@ -51,7 +51,8 @@ const router = createBrowserRouter([
                             },
                             {
                                 path: 'create',
-                                element: <BillingAddressCreatePage />
+                                element: <BillingAddressCreatePage />,
+                                action: createBillingAddressAction
                             }
                         ]
                     }

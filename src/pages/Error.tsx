@@ -3,6 +3,8 @@ import { isRouteErrorResponse, useRouteError } from "react-router-dom";
 const ErrorPage = () => {
     const error = useRouteError();
 
+    console.log(error)
+
   if (isRouteErrorResponse(error)) {
     if (error.status === 401) {
         

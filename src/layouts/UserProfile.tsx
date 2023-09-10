@@ -6,8 +6,8 @@ const links = [
         path: 'orders'
     },
     {
-        text: 'Billing Address',
-        path: 'billing-address'
+        text: 'Billing Addresses',
+        path: 'billing-addresses'
     }
 ]
 
