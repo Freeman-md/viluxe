@@ -1,5 +1,5 @@
 import { db } from "../config/firebase";
-import { child, get, onValue, push, ref } from "firebase/database";
+import { child, get, onValue, push, ref, remove } from "firebase/database";
 import store from "../store";
 import { setBillingAddresses } from "../store/user/user-slice";
 
@@ -23,8 +23,10 @@ class BillingAddress {
     console.log('Update billing address')
   }
 
-  delete(){
-    console.log('Delete billing address')
+  async delete(){
+    const billingAddressRef = ref(db, 'billing-addresses/' + this.id)
+
+    await remove(billingAddressRef)
   }
 
   async save() {
@@ -33,8 +35,6 @@ class BillingAddress {
 
     // Push the billing address data to the 'billingAddresses' node (or your preferred node name)
     await push(ref(db, 'billing-addresses'), billingAddressData)
-
-    console.log('Billing address saved successfully to Firebase!');
   }
 
   // method to get all billing addresses from database
@@ -44,8 +44,6 @@ class BillingAddress {
     return get(child(dbRef, 'billing-addresses')).then((snapshot) => {
       if (snapshot.exists()) {
         return snapshot.val()
-      } else {
-        console.log("No data available");
       }
     });
   }
