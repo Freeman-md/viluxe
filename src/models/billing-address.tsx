@@ -1,5 +1,7 @@
 import { db } from "../config/firebase";
-import { ref, set } from "firebase/database";
+import { child, get, onValue, push, ref } from "firebase/database";
+import store from "../store";
+import { setBillingAddresses } from "../store/user/user-slice";
 
 
 class BillingAddress {
@@ -17,18 +19,6 @@ class BillingAddress {
 
   static dbUrl = process.env.REACT_APP_FIREBASE_REALTIME_DATABASE_URL + '/billing-addresses.json'
 
-  static generateUniqueId = (): string  => {
-    // Generate a random string of letters and numbers
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const idLength = 10; // Adjust the length as needed
-    let id = '';
-    for (let i = 0; i < idLength; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      id += characters.charAt(randomIndex);
-    }
-    return id;
-  }
-
   update(){
     console.log('Update billing address')
   }
@@ -42,9 +32,34 @@ class BillingAddress {
     const billingAddressData = this.toJson();
 
     // Push the billing address data to the 'billingAddresses' node (or your preferred node name)
-    await set(ref(db, 'billing-addresses'), billingAddressData)
+    await push(ref(db, 'billing-addresses'), billingAddressData)
 
     console.log('Billing address saved successfully to Firebase!');
+  }
+
+  // method to get all billing addresses from database
+  static all() {
+    const dbRef = ref(db);
+
+    return get(child(dbRef, 'billing-addresses')).then((snapshot) => {
+      if (snapshot.exists()) {
+        return snapshot.val()
+      } else {
+        console.log("No data available");
+      }
+    });
+  }
+
+  static generateUniqueId = (): string  => {
+    // Generate a random string of letters and numbers
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const idLength = 10; // Adjust the length as needed
+    let id = '';
+    for (let i = 0; i < idLength; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      id += characters.charAt(randomIndex);
+    }
+    return id;
   }
 
   // Method to convert a JSON object to a BillingAddress instance
@@ -58,7 +73,7 @@ class BillingAddress {
       json.postalCode,
       json.phone,
       json.email,
-      json.id || BillingAddress.generateUniqueId(),
+      json.id || null,
     );
   }
 
