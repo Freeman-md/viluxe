@@ -13,6 +13,18 @@ export type Product = {
   description?: string;
 }
 
+export type BillingAddress = {
+  id: number,
+  firstName: string,
+  lastName: string,
+  address: string,
+  city: string,
+  country: string,
+  postalCode: string,
+  number: string,
+  email: string,
+}
+
 export type Order = {
   id: number;
   date: string;
