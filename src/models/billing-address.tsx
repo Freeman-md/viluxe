@@ -1,7 +1,6 @@
 import { db } from "../config/firebase";
-import { child, get, onValue, push, ref, remove } from "firebase/database";
+import { child, get, onValue, push, ref, remove, set, update } from "firebase/database";
 import store from "../store";
-import { setBillingAddresses } from "../store/user/user-slice";
 
 
 class BillingAddress {
@@ -14,16 +13,20 @@ class BillingAddress {
     public postalCode: string,
     public phone: string,
     public email: string,
-    public id?: number,
+    public id?: string,
   ) { }
 
   static dbUrl = process.env.REACT_APP_FIREBASE_REALTIME_DATABASE_URL + '/billing-addresses.json'
 
-  update(){
-    console.log('Update billing address')
+  async update(id: string) {
+    // Convert the BillingAddress instance to a JSON object
+    const billingAddressData = this.toJson();
+
+    // Update the billing address data using the id
+    await update(ref(db, 'billing-addresses/' + id), billingAddressData)
   }
 
-  async delete(){
+  async delete() {
     const billingAddressRef = ref(db, 'billing-addresses/' + this.id)
 
     await remove(billingAddressRef)
@@ -33,22 +36,24 @@ class BillingAddress {
     // Convert the BillingAddress instance to a JSON object
     const billingAddressData = this.toJson();
 
-    // Push the billing address data to the 'billingAddresses' node (or your preferred node name)
+    // Push the billing address data to the 'billingAddresses' node
     await push(ref(db, 'billing-addresses'), billingAddressData)
   }
 
   // method to get all billing addresses from database
-  static all() {
+  static fetch(id?: string) {
     const dbRef = ref(db);
 
-    return get(child(dbRef, 'billing-addresses')).then((snapshot) => {
+    const path = id ? `billing-addresses/${id}` : 'billing-addresses'
+
+    return get(child(dbRef, path)).then((snapshot) => {
       if (snapshot.exists()) {
         return snapshot.val()
       }
     });
   }
 
-  static generateUniqueId = (): string  => {
+  static generateUniqueId = (): string => {
     // Generate a random string of letters and numbers
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const idLength = 10; // Adjust the length as needed

@@ -10,13 +10,11 @@ import { formatFirebaseData } from '../../../utils';
 import Empty from '../../../components/Empty';
 import { fadeInList, fadeInListItem } from '../../../utils/framer-motion';
 
-type BillingAddressListPageLoaderData = {
-    billingAddresses: []
-}
-
 
 const BillingAddressListPage = () => {
-    const { billingAddresses: addresses } = useLoaderData() as BillingAddressListPageLoaderData
+    const { billingAddresses: addresses } = useLoaderData() as {
+        billingAddresses: []
+    }
 
     const [billingAddresses, setBillingAddresses] = useState<BillingAddress[]>(addresses.map(address => BillingAddress.fromJson(address)))
 
@@ -53,9 +51,9 @@ const BillingAddressListPage = () => {
                                 <p className="text-gray-600 mb-2">{`Phone: ${address.phone}`}</p>
                                 <p className="text-gray-600 mb-2">{`Email: ${address.email}`}</p>
                                 <div className="flex space-x-2 justify-end text-primary">
-                                    <button onClick={() => console.log('handle events')}>
+                                    <Link to={`${address.id}/edit`}>
                                         <Pencil />
-                                    </button>
+                                    </Link>
                                     <button onClick={() => handleDelete(address)}>
                                         <Trash />
                                     </button>
@@ -75,7 +73,7 @@ export default BillingAddressListPage;
 
 export const loader = async () => {
     try {
-        const billingAddresses = await BillingAddress.all()
+        const billingAddresses = await BillingAddress.fetch()
 
         return defer({
             billingAddresses: formatFirebaseData(billingAddresses)

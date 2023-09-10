@@ -9,6 +9,7 @@ import WishlistPage from "./pages/Wishlist";
 import OrdersPage from "./pages/user/Orders";
 import BillingAddressListPage, { loader as getBillingAddressesLoader } from "./pages/user/billing-addresses/index";
 import BillingAddressCreatePage, { action as createBillingAddressAction } from "./pages/user/billing-addresses/create";
+import BillingAddressEditPage, { loader as getBillingAddressLoader, action as updateBillingAddressAction } from "./pages/user/billing-addresses/edit";
 import ErrorPage from "./pages/Error";
 
 const router = createBrowserRouter([
@@ -47,13 +48,19 @@ const router = createBrowserRouter([
                         children: [
                             {
                                 index: true,
+                                loader: getBillingAddressesLoader,
                                 element: <BillingAddressListPage />,
-                                loader: getBillingAddressesLoader
                             },
                             {
                                 path: 'create',
                                 element: <BillingAddressCreatePage />,
-                                action: createBillingAddressAction
+                                action: createBillingAddressAction,
+                            },
+                            {
+                                path: ':id/edit',
+                                loader: getBillingAddressLoader,
+                                action: updateBillingAddressAction,
+                                element: <BillingAddressEditPage />
                             }
                         ]
                     }

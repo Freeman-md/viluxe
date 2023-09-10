@@ -1,30 +1,29 @@
 import { ErrorMessage, Field, Form, Formik, FormikProps } from 'formik';
 import * as Yup from 'yup';
-import { ActionFunctionArgs, redirect, useFetcher } from 'react-router-dom';
-import { json } from 'react-router-dom';
-
+import { ActionFunctionArgs, LoaderFunctionArgs, json, redirect, useFetcher, useLoaderData } from 'react-router-dom';
 import BillingAddress from '../../../models/billing-address';
 
-const BillingAddressCreatePage = () => {
+const BillingAddressEditPage = () => {
     const fetcher = useFetcher()
+    const { billingAddress } = useLoaderData() as { billingAddress: BillingAddress }
 
     return (
         <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-semibold mb-4">Billing Address</h1>
+            <h1 className="text-2xl font-semibold mb-4">Update Billing Address</h1>
 
             <div className='w-full sm:col-span-2'>
                 <h2 className="text-lg font-semibold mb-2">Billing Information</h2>
                 <Formik
                     initialValues={
                         {
-                            firstName: '',
-                            lastName: '',
-                            email: '',
-                            phone: '',
-                            address: '',
-                            city: '',
-                            country: '',
-                            postalCode: '',
+                            firstName: billingAddress.firstName,
+                            lastName: billingAddress.lastName,
+                            email: billingAddress.email,
+                            phone: billingAddress.phone,
+                            address: billingAddress.address,
+                            city: billingAddress.city,
+                            country: billingAddress.country,
+                            postalCode: billingAddress.postalCode,
                         }
                     }
                     validationSchema={
@@ -41,15 +40,14 @@ const BillingAddressCreatePage = () => {
                     }
                     onSubmit={(values) => {
                         fetcher.submit(values, {
-                            method: 'POST',
-                            action: '/user/billing-addresses/create'
+                            method: 'PUT',
+                            action: `/user/billing-addresses/${billingAddress.id}/edit`
                         })
                     }}
                 >
                     {({ isSubmitting }: FormikProps<any>) => (
                         <Form className='space-y-4'>
                             <div className='grid md:grid-cols-2 gap-6 w-full'>
-
                                 <div>
                                     <Field name="firstName" placeholder="Enter your first name" className="form-control w-full" />
                                     <ErrorMessage name="firstName" component="small" className="text-red-500 lowercase" />
@@ -82,6 +80,9 @@ const BillingAddressCreatePage = () => {
                                     <Field name="postalCode" placeholder="Enter your postal code" className="form-control w-full" />
                                     <ErrorMessage name="postalCode" component="small" className="text-red-500 lowercase" />
                                 </div>
+                                <div>
+                                    <Field name="id" />
+                                </div>
 
                             </div>
 
@@ -94,11 +95,28 @@ const BillingAddressCreatePage = () => {
     );
 };
 
-export default BillingAddressCreatePage;
+export default BillingAddressEditPage;
+
+export const loader = async ({ params } : LoaderFunctionArgs) => {
+    const id = params.id
+
+    try {
+        const billingAddress = await BillingAddress.fetch(id)
+
+        return json({
+            billingAddress: {
+                ...billingAddress,
+                id
+            }
+        }, { status: 200 })
+    } catch (error: any) {
+        throw json({ message: error.message })
+    }
+}
 
 export const action = async ({ request, params } : ActionFunctionArgs) => {
     try {
-
+        const id = params.id!
         const data = await request.formData()
 
         // instantiate billing address from form data
@@ -113,7 +131,7 @@ export const action = async ({ request, params } : ActionFunctionArgs) => {
             postalCode: data.get('postalCode') as string,
         })
 
-        await billingAddress.save()
+        await billingAddress.update(id)
 
         return redirect('/user/billing-addresses')
     } catch (error: any) {
