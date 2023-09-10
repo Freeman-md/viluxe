@@ -27,7 +27,7 @@ const BillingAddressListPage = () => {
     return (
         <div className="container mx-auto py-8">
             <div className='flex items-center justify-between space-x-4'>
-                <h1 className="text-2xl font-bold mb-4">Billing Addresses</h1>
+                <h1 className="text-xl sm:text-2xl font-bold mb-4">Billing Addresses</h1>
 
                 <Link
                     to="create"
