@@ -1,9 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import { Product } from '../types';
 import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks';
 import { toggleItemInCart } from '../store/shopping';
 import Empty from '../components/Empty';
-import { Link } from 'react-router-dom';
 
 type CartItemProps = {
   product: Product;
@@ -13,13 +14,13 @@ type CartItemProps = {
 const CartItem: React.FC<CartItemProps> = ({ product, onRemove }) => {
   return (
     <div className="flex items-center space-x-4 justify-between p-4 border-b border-gray-300">
-      <div className="flex items-center space-x-4">
+      <Link to={`/products/${product.id}`} className="flex items-center space-x-4">
         <img src={product.image} alt={product.title} className="w-16 h-16 object-contain" />
         <div>
           <h2 className="text-lg font-semibold">{product.title}</h2>
           <p className="text-gray-600">{product.category}</p>
         </div>
-      </div>
+      </Link>
       <div className="text-lg font-semibold">${product.price.toFixed(2)}</div>
       <button
         className="text-red-600 hover:text-red-800"
