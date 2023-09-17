@@ -4,6 +4,7 @@ import { ActionFunctionArgs, redirect, useFetcher } from 'react-router-dom';
 import { json } from 'react-router-dom';
 
 import BillingAddress from '../../../models/billing-address';
+import CustomInput from '../../../components/CustomInput';
 
 const BillingAddressCreatePage = () => {
     const fetcher = useFetcher()
@@ -47,41 +48,17 @@ const BillingAddressCreatePage = () => {
                     }}
                 >
                     {({ isSubmitting }: FormikProps<any>) => (
-                        <Form className='space-y-4'>
-                            <div className='grid md:grid-cols-2 gap-6 w-full'>
+                        <Form className='space-y-2 md:space-y-4'>
+                            <div className='grid gap-2 md:grid-cols-2 md:gap-6 w-full'>
 
-                                <div>
-                                    <Field name="firstName" placeholder="Enter your first name" className="form-control w-full" />
-                                    <ErrorMessage name="firstName" component="small" className="text-red-500 lowercase" />
-                                </div>
-                                <div>
-                                    <Field name="lastName" placeholder="Enter your last name" className="form-control w-full" />
-                                    <ErrorMessage name="lastName" component="small" className="text-red-500 lowercase" />
-                                </div>
-                                <div>
-                                    <Field name="email" type="email" placeholder="Enter your email address" className="form-control w-full" />
-                                    <ErrorMessage name="email" component="small" className="text-red-500 lowercase" />
-                                </div>
-                                <div>
-                                    <Field name="phone" type="phone" placeholder="Enter your phone number" className="form-control w-full" />
-                                    <ErrorMessage name="phone" component="small" className="text-red-500 lowercase" />
-                                </div>
-                                <div>
-                                    <Field name="address" placeholder="Enter your address" className="form-control w-full" />
-                                    <ErrorMessage name="address" component="small" className="text-red-500 lowercase" />
-                                </div>
-                                <div>
-                                    <Field name="city" placeholder="Enter your city" className="form-control w-full" />
-                                    <ErrorMessage name="city" component="small" className="text-red-500 lowercase" />
-                                </div>
-                                <div>
-                                    <Field name="country" placeholder="Enter your country" className="form-control w-full" />
-                                    <ErrorMessage name="country" component="small" className="text-red-500 lowercase" />
-                                </div>
-                                <div>
-                                    <Field name="postalCode" placeholder="Enter your postal code" className="form-control w-full" />
-                                    <ErrorMessage name="postalCode" component="small" className="text-red-500 lowercase" />
-                                </div>
+                                <CustomInput label='First Name' name='firstName' type='text' />
+                                <CustomInput label='Last Name' name='lastName' type='text' />
+                                <CustomInput label='Email' name='email' type='email' />
+                                <CustomInput label='Phone' name='phone' type='phone' />
+                                <CustomInput label='Address' name='address' type='text' />
+                                <CustomInput label='City' name='city' type='text' />
+                                <CustomInput label='Country' name='country' type='text' />
+                                <CustomInput label='Postal Code' name='postalCode' type='text' />
 
                             </div>
 
@@ -96,7 +73,7 @@ const BillingAddressCreatePage = () => {
 
 export default BillingAddressCreatePage;
 
-export const action = async ({ request, params } : ActionFunctionArgs) => {
+export const action = async ({ request, params }: ActionFunctionArgs) => {
     try {
 
         const data = await request.formData()
