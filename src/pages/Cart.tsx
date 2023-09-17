@@ -3,7 +3,6 @@ import { Product } from '../types';
 import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks';
 import { toggleItemInCart } from '../store/shopping';
 import Empty from '../components/Empty';
-import CheckoutForm from '../components/CheckoutForm';
 import { Link } from 'react-router-dom';
 
 type CartItemProps = {
@@ -51,7 +50,7 @@ const CartPage: React.FC = () => {
         <div className="space-y-4">
           <div className="sticky top-[4.2rem] sm:top-20 flex items-center justify-between bg-white py-2">
             <h2 className="text-xl font-medium">{cartItems.length} items</h2>
-            <Link to="/checkout/billing-address" className="bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark">
+            <Link to="/checkout" className="bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark">
               Checkout
             </Link>
           </div>

@@ -11,6 +11,7 @@ import BillingAddressListPage, { loader as getBillingAddressesLoader } from "./p
 import BillingAddressCreatePage, { action as createBillingAddressAction } from "./pages/user/billing-addresses/create";
 import BillingAddressEditPage, { loader as getBillingAddressLoader, action as updateBillingAddressAction } from "./pages/user/billing-addresses/edit";
 import ErrorPage from "./pages/Error";
+import Checkout from "./pages/Checkout";
 
 const router = createBrowserRouter([
     {
@@ -65,6 +66,11 @@ const router = createBrowserRouter([
                         ]
                     }
                 ]
+            },
+            {
+                path: '/checkout',
+                element: <Checkout />,
+                loader: getBillingAddressesLoader
             }
         ]
     }

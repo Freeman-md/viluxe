@@ -158,7 +158,7 @@ const HomePage: React.FC = () => {
 
         <motion.div initial="hidden"
           animate="visible"
-          variants={animatedProductList} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full items-stretch">
+          variants={animatedProductList} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full items3-stretch">
           <Suspense fallback={<LoadingSpinner text="Loading products..." />}>
             <Await resolve={products}>
               {filteredProducts?.map((product: Product) => (
