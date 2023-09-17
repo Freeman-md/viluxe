@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { Await, LoaderFunctionArgs, defer, json, useFetcher, useLoaderData } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -10,6 +10,8 @@ import useProductFilters from "../hooks/useProductFilters";
 import { Product } from "../types";
 import { useAppDispatch, useAppSelector } from "../hooks/useReduxHooks";
 import { toggleItemInCart, toggleItemInWishlist } from "../store/shopping";
+import { ReactComponent as ShoppingCart } from '../assets/svgs/shopping-cart.svg'
+import { ReactComponent as Check } from '../assets/svgs/check.svg'
 
 type HomeLoaderDataProps = {
   categories: Array<string>,
@@ -167,21 +169,29 @@ const HomePage: React.FC = () => {
                     product={product}
                     isItemInWishlist={isItemInWishlist(product)} // Pass the boolean value directly
                     onToggleFavorite={toggleFavouriteHandler.bind(null, product)}
-                  >
-                    {(() => {
+                    addToCartButton={(() => {
                       const isProductInCart = isItemInCart(product);
                       return (
-                        <button
-                          className={`btn w-full mt-4 ${isProductInCart ? 'btn-outline' : 'btn-primary'}`}
+                        <motion.button
+                          whileTap={{ scale: 0.97 }}
+                          className={`absolute z-10 w-14 h-14 p-2 !rounded-full top-[50%] right-2 bg-primary text-white`}
                           onClick={() => toggleItemInCartHandler(product)}
                         >
-                          {isProductInCart ? 'Remove from cart' : 'Add to cart'}
-                        </button>
+                          {
+                            !isProductInCart
+                              ? <div className="flex flex-col items-center justify-center">
+                                <ShoppingCart className="w-6" />
+                                <span className="text-xs">Add</span>
+                              </div>
+                              : <div className="flex flex-col items-center justify-center">
+                                <Check className="w-6" />
+                                <span className="text-xs">Added</span>
+                              </div>
+                          }
+                        </motion.button>
                       );
                     })()}
-                  </ProductCard>
-
-
+                  />
                 </motion.div>
               ))}
             </Await>

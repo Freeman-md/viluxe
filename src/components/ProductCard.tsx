@@ -9,17 +9,19 @@ type ProductCardProps = {
     product: Product;
     isItemInWishlist: boolean;
     onToggleFavorite: () => void;
-    children?: ReactNode;
+    addToCartButton?: ReactNode;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, isItemInWishlist, onToggleFavorite, children }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, isItemInWishlist, onToggleFavorite, addToCartButton }) => {
     const { id, title, image, price, category, rating } = product
 
     return (
         <div className="w-full overflow-hidden border rounded-3xl block relative h-full">
             <FavouriteButton isFavourited={isItemInWishlist} toggleFavourite={onToggleFavorite} />
 
-            <Link to={`/products/${id}`} className="h-80 w-full overflow-hidden">
+            { addToCartButton }
+
+            <Link to={`/products/${id}`} className="h-80 w-full overflow-hidden relative">
                 <img className="w-full h-80 object-contain" src={image} alt={title} />
             </Link>
             <div className="px-6 py-4">
@@ -30,8 +32,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isItemInWishlist, on
                         <span>Rating: </span> 
                         <RatingStars rating={rating.rate}></RatingStars>
                 </div>
-
-                {children}
             </div>
         </div>
     );

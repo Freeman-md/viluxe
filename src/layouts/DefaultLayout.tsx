@@ -16,7 +16,7 @@ const DefaultLayout = () => {
 
     return (
         <>
-            <header className='fixed top-0 z-10 w-full'>
+            <header className='fixed top-0 z-30 w-full'>
                 <div className="bg-white container flex items-center justify-between py-4">
 
                     <NavLink to="/">

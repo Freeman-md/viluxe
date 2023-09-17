@@ -1,8 +1,9 @@
-import React, { Suspense, useState } from 'react';
+import React, { Suspense } from 'react';
+import { Await, LoaderFunctionArgs, defer, json, useLoaderData } from 'react-router-dom';
+
 import { Product } from '../types';
 import RatingStars from '../components/RatingStars';
 import FavouriteButton from '../components/FavouriteButton';
-import { Await, LoaderFunctionArgs, defer, json, useLoaderData } from 'react-router-dom';
 import ProductService from '../api/product-service';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks';
