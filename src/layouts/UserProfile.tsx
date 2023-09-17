@@ -24,10 +24,6 @@ const UserProfileLayout = () => {
                     <div>
                         <span className="bg-primary text-white px-2 py-1 rounded">Verified</span>
                     </div>
-                    <div>
-                        <button className="btn btn-outline">Edit Profile</button>
-                    </div>
-
                 </div>
             </section>
 
