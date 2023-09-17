@@ -13,8 +13,6 @@ const Checkout: React.FC = () => {
         billingAddresses: []
     }
 
-    console.log(stripePromise)
-
     const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState<'billing' | 'payment'>('billing');
 

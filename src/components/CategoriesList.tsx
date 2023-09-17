@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, Variants } from "framer-motion";
 
 const itemVariants: Variants = {
@@ -17,7 +17,22 @@ type CategoriesListProps = {
 }
 
 const CategoriesList: React.FC<CategoriesListProps> = ({ categories, selectCategory, selectedCategory }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(true)
+  // Set the initial state based on the window width (sm screens upwards: isOpen=true, others: isOpen=false)
+  const [isOpen, setIsOpen] = useState<boolean>(window.innerWidth >= 640);
+
+  // Update isOpen state based on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsOpen(window.innerWidth >= 640);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <motion.aside
