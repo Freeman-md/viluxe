@@ -38,7 +38,7 @@ const CategoriesList: React.FC<CategoriesListProps> = ({ categories, selectCateg
     <motion.aside
       initial={false}
       animate={isOpen ? "open" : "closed"}
-      className={`${isOpen ? 'h-auto max-h-96 pb-8' : 'h-14'} transition duration-200 space-y-4 overflow-hidden sticky top-[4.2rem] sm:pb-20 sm:top-24 sm:h-[85vh] bg-white z-20`}
+      className={`${isOpen ? 'h-auto max-h-96 pb-8' : 'h-14'} transition duration-200 space-y-4 overflow-hidden sticky top-[5.2rem] py-1 sm:pb-20 sm:top-24 sm:h-[85vh] bg-white z-20`}
     >
       <motion.button
         whileTap={{ scale: 0.97 }}
