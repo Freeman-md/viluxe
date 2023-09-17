@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Elements } from '@stripe/react-stripe-js';
+import { StripeElementsOptions, loadStripe } from '@stripe/stripe-js';
 
 import CheckoutForm from '../components/CheckoutForm';
 import BillingAddressList from '../components/BillingAddressList';
-import { Elements } from '@stripe/react-stripe-js';
-import { StripeElementsOptions, loadStripe } from '@stripe/stripe-js';
+import InfoCard from '../components/InfoCard';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_KEY!)
 
@@ -34,7 +36,7 @@ const Checkout: React.FC = () => {
 
     return (
         <Elements stripe={stripePromise} options={options}>
-            <div className="container mx-auto py-8">
+            <div className="container mx-auto py-8 relative">
                 <div className="flex space-x-4">
                     <button
                         onClick={() => handleTabClick('billing')}
@@ -44,6 +46,7 @@ const Checkout: React.FC = () => {
                         Billing Address
                     </button>
                     <button
+                    disabled={!selectedAddressId}
                         onClick={() => handleTabClick('payment')}
                         className={`${activeTab === 'payment' ? 'bg-primary text-white' : 'bg-gray-300 text-gray-700'
                             } px-4 py-2 rounded-lg flex-1 focus:outline-none`}
@@ -53,8 +56,9 @@ const Checkout: React.FC = () => {
                 </div>
                 <div className="mt-8">
                     {activeTab === 'billing' ? (
-                        <div>
+                        <div className='space-y-2'>
                             <h2 className="text-2xl font-semibold mb-4">Billing Addresses</h2>
+                            <InfoCard title='Click on a card to select billing address' />
                             <BillingAddressList
                                 addresses={addresses}
                                 selectedAddressId={selectedAddressId}
@@ -65,6 +69,16 @@ const Checkout: React.FC = () => {
                         <CheckoutForm />
                     )}
                 </div>
+
+                <AnimatePresence>
+                { 
+                    selectedAddressId && activeTab !== 'payment' &&
+                    <motion.button initial={{ y: 101 }}
+                    animate={{ y: 0 }} exit={{ y: 101, opacity: 0 }} onClick={() => handleTabClick('payment')} className='btn btn-primary fixed bottom-2 inset-x-0 w-3/4 sm:!max-w-sm mx-auto'>
+                        Use this address
+                    </motion.button>
+                }
+                </AnimatePresence>
             </div>
         </Elements>
     );

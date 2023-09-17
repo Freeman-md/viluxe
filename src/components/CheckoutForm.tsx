@@ -1,16 +1,7 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { FormEvent } from "react";
-
-const TestPaymentDetails = () => {
-    return (
-      <div className="bg-gray-100 p-4 rounded-t">
-        <h3 className="text-lg font-bold mb-2">Test Payment Details</h3>
-        <p>Card Number: 4242 4242 4242 4242</p>
-        <p>Expiry Date: Any future date</p>
-        <p>CVC: 123</p>
-      </div>
-    );
-  };
+import InfoCard from "./InfoCard";
+import CopyToClipboard from "./CopyToClipboard";
 
 const CheckoutForm = () => {
     const stripe = useStripe()
@@ -44,7 +35,11 @@ const CheckoutForm = () => {
 
     return (
         <>
-            <TestPaymentDetails />
+        <InfoCard title="Test Payment Details">
+        <p>Card Number: <CopyToClipboard>4242 4242 4242 4242</CopyToClipboard></p>
+        <p>Expiry Date: Any future date</p>
+        <p>CVC: 123</p>
+        </InfoCard>
 
             <form onSubmit={handleSubmit} className="space-y-4">
                 <CardElement className="p-4 border rounded mt-2" />
