@@ -27,14 +27,14 @@ const BillingAddressListPage = () => {
 
     return (
         <div className="container mx-auto py-8">
-            <div className='flex items-center justify-between space-x-4'>
-                <h1 className="text-xl sm:text-2xl font-bold mb-4">Billing Addresses</h1>
+            <div className='flex items-center justify-between space-x-4 mb-4'>
+                <h1 className="text-xl sm:text-2xl font-bold">Billing Addresses</h1>
 
                 <Link
                     to="create"
                     className="btn btn-primary"
                 >
-                    Create New Billing Address
+                    Create Billing Address
                 </Link>
             </div>
             <motion.div initial="hidden"
