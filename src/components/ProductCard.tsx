@@ -30,7 +30,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isItemInWishlist, on
                 <p className="text-gray-700 text-base mb-2">${price}</p>
                 <div className="flex text-gray-700 text-sm items-center space-x-1">
                         <span>Rating: </span> 
-                        <RatingStars rating={rating.rate}></RatingStars>
+                        <RatingStars rating={rating}></RatingStars>
                 </div>
             </div>
         </div>
