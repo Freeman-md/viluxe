@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { Product } from '../types';
 import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks';
-import { toggleItemInCart } from '../store/shopping';
+import { toggleItemInCart } from '../store/shopping/shopping-slice';
 import Empty from '../components/Empty';
 
 type CartItemProps = {

@@ -7,7 +7,7 @@ import FavouriteButton from '../components/FavouriteButton';
 import ProductService from '../api/product-service';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks';
-import { toggleItemInCart, toggleItemInWishlist } from '../store/shopping';
+import { toggleItemInCart, toggleItemInWishlist } from '../store/shopping/shopping-slice';
 
 type ProductLoaderDataProps = {
     product: Product
@@ -23,7 +23,7 @@ export const ProductPage: React.FC = () => {
 
     const isInWishlist = useAppSelector(state => state.shopping.wishlist.some(item => item.id === product.id))
 
-    const isItemInCart = (product: Product) : boolean => cartItems.some(item => item.id === product.id)
+    const isItemInCart = (product: Product): boolean => cartItems.some(item => item.id === product.id)
 
     const toggleFavouriteHandler = () => {
         dispatch(
