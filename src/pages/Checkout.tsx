@@ -2,47 +2,47 @@ import React, { useEffect, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Elements } from '@stripe/react-stripe-js';
-import { StripeElementsOptions, StripeElementsOptionsClientSecret, StripeElementsOptionsMode, loadStripe } from '@stripe/stripe-js';
+import { StripeElementsOptionsClientSecret, loadStripe } from '@stripe/stripe-js';
 
 import CheckoutForm from '../components/CheckoutForm';
 import BillingAddressList from '../components/BillingAddressList';
 import InfoCard from '../components/InfoCard';
 import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks';
 import { createStripePaymentIntent } from '../store/shopping/shopping-actions';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_KEY!)
 
 const Checkout: React.FC = () => {
     const dispatch = useAppDispatch()
 
+    const [options, setOptions] = useState<StripeElementsOptionsClientSecret>({})
+
     const { billingAddresses: addresses } = useLoaderData() as {
         billingAddresses: []
     }
     const clientSecret = useAppSelector(state => state.shopping.stripe.clientSecret)
-    const cartTotal = useAppSelector(state => {
-        const total = state.shopping.cart.reduce((total, item) => total + item.price, 0)
-
-        return Math.ceil(total)
-    });
+    const cart = useAppSelector(state => state.shopping.cart)
+    const cartTotal = cart.reduce((total, item) => total + item.price, 0) * 100
 
     const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState<'billing' | 'payment'>('billing');
 
-    let options: StripeElementsOptionsClientSecret = {}
-
-    if (clientSecret) {
-        options.clientSecret = clientSecret
+    if (clientSecret && Object.keys(options).length === 0) {
+        setOptions(() => ({ clientSecret }))
     }
 
+    // create payment intent to initialize payment
     useEffect(() => {
         try {
             dispatch(createStripePaymentIntent({
-                amount: cartTotal
+                amount: cartTotal,
+                metadata: cart,
             }))
         } catch (error: any) {
             console.log('Error creating payment intent: ', error)
         }
-    }, [dispatch, cartTotal])
+    }, [dispatch, cartTotal, cart])
 
     const handleTabClick = (step: 'billing' | 'payment') => {
         setActiveTab(step);
@@ -54,7 +54,7 @@ const Checkout: React.FC = () => {
     };
 
     return (
-        <Elements stripe={stripePromise} options={options}>
+        clientSecret ? <Elements stripe={stripePromise} options={options}>
             <div className="container mx-auto py-8 relative">
                 <div className="flex space-x-4">
                     <button
@@ -85,7 +85,6 @@ const Checkout: React.FC = () => {
                             />
                         </div>
                     ) : (
-
                         <CheckoutForm />
                     )}
                 </div>
@@ -93,14 +92,15 @@ const Checkout: React.FC = () => {
                 <AnimatePresence>
                     {
                         selectedAddressId && activeTab !== 'payment' &&
-                        <motion.button initial={{ y: 101 }}
-                            animate={{ y: 0 }} exit={{ y: 101, opacity: 0 }} onClick={() => handleTabClick('payment')} className='btn btn-primary fixed bottom-2 inset-x-0 w-3/4 sm:!max-w-sm mx-auto'>
+                        <motion.button initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => handleTabClick('payment')} className='btn btn-primary fixed bottom-2 inset-x-0 w-3/4 sm:!max-w-sm mx-auto'>
                             Use this address
                         </motion.button>
                     }
                 </AnimatePresence>
             </div>
         </Elements>
+            : <LoadingSpinner text='Loading...' />
     );
 };
 

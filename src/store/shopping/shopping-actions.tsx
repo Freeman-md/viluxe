@@ -1,14 +1,14 @@
 import { AppDispatch } from "../../types";
 import { setClientSecret } from "./shopping-slice";
 
-export const createStripePaymentIntent = ({ amount }: { amount: number }) => {
+export const createStripePaymentIntent = ({ amount, metadata }: { amount: number, metadata: object }) => {
   return async (dispatch: AppDispatch) => {
-      const response = await fetch('https://viluxe-api.onrender.com/create-payment-intent', {
+      const response = await fetch(`${process.env.NODE_API_URL}/create-payment-intent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ amount }),
+        body: JSON.stringify({ amount, metadata }),
       });
 
       if (!response.ok) {

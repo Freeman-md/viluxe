@@ -68,7 +68,6 @@ const BillingAddressListPage = () => {
 
 export default BillingAddressListPage;
 
-
 export const loader = async () => {
     try {
         const billingAddresses = await BillingAddressModel.fetch()

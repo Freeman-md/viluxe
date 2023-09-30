@@ -1,5 +1,5 @@
 import { CardElement, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { FormEvent } from "react";
+import { FormEvent, useEffect } from "react";
 import InfoCard from "./InfoCard";
 import CopyToClipboard from "./CopyToClipboard";
 import { useAppSelector } from "../hooks/useReduxHooks";
@@ -24,7 +24,7 @@ const CheckoutForm = () => {
             elements,
             clientSecret,
             confirmParams: {
-                return_url: "https://viluxe.onrender.com/user/orders",
+                return_url: `${process.env.REACT_APP_URL}/checkout`
             },
         });
 
