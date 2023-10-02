@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, defer, json, useLoaderData } from 'react-router-dom';
 import OrderModel from '../../models/order';
-import { formatDateFromTimestamp, formatFirebaseData } from '../../utils';
+import { formatDateFromTimestamp, formatFirebaseData, formatMoney } from '../../utils';
 import Badge, { BadgeType } from '../../components/Badge';
 
 type OrderCardProps = {
@@ -48,7 +48,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
             )}
             <div className="mt-2">
                 <span className="text-lg font-semibold text-primary">
-                    Total: ${order.total.toFixed(2)}
+                    Total: { formatMoney(order.total) }
                 </span>
             </div>
         </div>

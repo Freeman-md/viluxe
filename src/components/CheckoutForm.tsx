@@ -23,7 +23,7 @@ const CheckoutForm = () => {
           image
         }));
       
-        const total = orderItems.reduce((total, item) => total + item.price, 0) * 100;
+        const total = orderItems.reduce((total, item) => total + item.price, 0);
       
         const order = Order.fromJson({
           items: mappedOrderItems,

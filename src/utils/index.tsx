@@ -37,3 +37,20 @@ export const formatDateFromTimestamp = (timestamp: Date) => {
   return formattedDateTime
 
 }
+
+export const formatMoney = (amount: number, decimalPlaces = 2, currencySymbol = '$') => {
+  if (isNaN(amount) || amount === null) {
+    return 'Invalid amount';
+  }
+
+  // Round to the specified number of decimal places
+  const roundedAmount = Math.round(amount * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
+
+  // Format the amount with commas for thousands and the currency symbol
+  const formattedAmount = roundedAmount.toLocaleString(undefined, {
+    minimumFractionDigits: decimalPlaces,
+    maximumFractionDigits: decimalPlaces
+  });
+
+  return `${currencySymbol}${formattedAmount}`;
+}
