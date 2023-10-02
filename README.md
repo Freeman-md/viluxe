@@ -4,6 +4,8 @@ Viluxe is a cutting-edge e-commerce platform meticulously crafted using ReactJS 
 
 🌐 Experience It: Explore the live app: [Viluxe Live](https://viluxe.onrender.com)
 
+![Home Page](/public/images/home.jpeg)
+
 ## Motivation
 
 The driving force behind Viluxe was to create an exceptional e-commerce platform that seamlessly blends modern web technologies to deliver a superior shopping experience. Utilizing ReactJS and TypeScript allowed for a robust foundation, while the integration of Redux and React Router elevated user interactions to the next level.
