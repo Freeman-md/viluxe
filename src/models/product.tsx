@@ -10,7 +10,15 @@ export class Product {
     ) {}
   
     static fromJson(json: any): Product {
-      return Object.assign(this, json)
+      return new Product(
+        json.title,
+        json.image,
+        json.price,
+        json.category,
+        json.rating,
+        json.description,
+        json.id
+      )
     }
   
     toJson(): any {

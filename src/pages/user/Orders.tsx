@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, defer, json, useLoaderData } from 'react-router-dom';
 import OrderModel from '../../models/order';
 import { formatDateFromTimestamp, formatFirebaseData } from '../../utils';
+import Badge, { BadgeType } from '../../components/Badge';
 
 type OrderCardProps = {
     order: OrderModel;
@@ -17,7 +18,12 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
     return (
         <div className="border p-4 rounded-md shadow-md">
             <div className="flex items-center justify-between mb-2">
-                <h2 className="text-lg font-semibold">Order #{order.id}</h2>
+                <div className='flex items-center space-x-2'>
+                    <h2 className="text-lg font-semibold">Order #{order.id}</h2>
+                    <Badge type={BadgeType.RECTANGULAR} classes={order.status === 'pending' ? '!bg-yellow-500' : ''}>
+                        { order.status }
+                    </Badge>
+                </div>
                 <button
                     className="text-primary focus:outline-none"
                     onClick={toggleProducts}

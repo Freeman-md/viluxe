@@ -6,6 +6,7 @@ import { toggleItemInCart } from '../store/shopping/shopping-slice';
 import Empty from '../components/Empty';
 import { createStripePaymentIntent } from '../store/shopping/shopping-actions';
 import { Product } from '../models/product';
+import Order from '../models/order';
 
 type CartItemProps = {
   product: Product;
@@ -45,9 +46,9 @@ const CartPage: React.FC = () => {
   };
 
   // initialize payment
-  const checkoutHandler = () => {
+  const checkoutHandler = async () => {
     try {
-      dispatch(createStripePaymentIntent({
+      await dispatch(createStripePaymentIntent({
         amount: cartItems.reduce((total, item) => total + item.price, 0) * 100,
         metadata: {
           cart: JSON.stringify(cartItems.map(item => ({ id: item.id, title: item.title, image: item.image, price: item.price }))),

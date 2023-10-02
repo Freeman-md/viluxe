@@ -3,12 +3,39 @@ import { FormEvent, useEffect } from "react";
 import InfoCard from "./InfoCard";
 import CopyToClipboard from "./CopyToClipboard";
 import { useAppSelector } from "../hooks/useReduxHooks";
+import { Product } from "../models/product";
+import Order from "../models/order";
 
 const CheckoutForm = () => {
     const stripe = useStripe()
     const elements = useElements()
 
     const clientSecret = useAppSelector(state => state.shopping.stripe.clientSecret)
+    const cartItems = useAppSelector(state => state.shopping.cart)
+
+    const createOrder = async () => {
+        const orderItems = cartItems.map(item => Product.fromJson(item));
+      
+        const mappedOrderItems = orderItems.map(({ title, id, price, image }) => ({
+          title,
+          id,
+          price,
+          image
+        }));
+      
+        const total = orderItems.reduce((total, item) => total + item.price, 0) * 100;
+      
+        const order = Order.fromJson({
+          items: mappedOrderItems,
+          status: 'pending',
+          date: Date.now(),
+          total,
+          clientSecret
+        });
+      
+        await order.save();
+      };
+      
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -19,6 +46,8 @@ const CheckoutForm = () => {
         }
 
         elements.submit()
+
+        await createOrder()
 
         const result = await stripe.confirmPayment({
             elements,

@@ -3,6 +3,7 @@ import { ReactComponent as Confirmation } from '../assets/svgs/confirmation.svg'
 import { useEffect, useState } from 'react'
 import { Product } from '../models/product'
 import Order from '../models/order'
+import { formatFirebaseData } from '../utils'
 
 const Payment = () => {
     const [status, setStatus] = useState<'succeeded' | 'requires_action' | 'requires_payment_method' | 'pending'>('pending')
@@ -11,6 +12,7 @@ const Payment = () => {
     useEffect(() => {
         const verifyPayment = async () => {
             const paymentIntentId = (new URL(window.location.href)).searchParams.get('payment_intent')
+            const clientSecret = (new URL(window.location.href)).searchParams.get('payment_intent_client_secret')
 
             const response = await fetch(`${process.env.REACT_APP_API_URL}/get-payment-intent?payment_intent_client_secret=${paymentIntentId}`)
 
@@ -20,32 +22,26 @@ const Payment = () => {
                 setStatus(paymentIntent.status)
             }
 
-            return paymentIntent
+            return clientSecret
         }
 
-        const createOrder = async (cartItems: Product[]) => {
-            const orderItems = cartItems.map(item => Product.fromJson(item));
+        const updateOrder = async (clientSecret: string) => {
+            const ordersSnapshot = await Order.fetch()
+            const ordersData = formatFirebaseData(ordersSnapshot) as Order[]
 
-            const order: Order = Order.fromJson({
-                items: orderItems.map(item => ({
-                    title: item.title,
-                    id: item.id,
-                    price: item.price,
-                    image: item.image
-                  })),
-                status: 'confirmed',
-                date: Date.now(),
-                total: orderItems.reduce((total, item) => total + item.price, 0) * 100,
-            })
+            const orderSnapshot = ordersData.find(order => order.clientSecret === clientSecret)
 
-            await order.save()
+            const orderData = Order.fromJson(orderSnapshot)
+
+            if (status === 'succeeded') {
+                orderData.status = 'confirmed'
+            }
+
+            orderData.update()
         }
 
         verifyPayment()
-            .then(paymentIntent => JSON.parse(paymentIntent.metadata.cart))
-            .then(cartItems => {
-                createOrder(cartItems)
-            })
+            .then(clientSecret => updateOrder(clientSecret!))
             .catch(() => { console.log('An error has occurred') })
 
     })

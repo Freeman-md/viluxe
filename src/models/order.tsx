@@ -8,6 +8,7 @@ class Order {
     public date: Date,
     public total: number,
     public status?: string,
+    public clientSecret?: string,
     public id?: string,
   ) {}
 
@@ -56,6 +57,7 @@ class Order {
       json.date,
       json.total,
       json.status,
+      json.clientSecret,
       json.id || null,
     );
   }
@@ -67,6 +69,7 @@ class Order {
       total: this.total,
       date: this.date,
       status: this.status,
+      clientSecret: this.clientSecret
     };
   }
 }
