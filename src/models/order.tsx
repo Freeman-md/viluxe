@@ -28,19 +28,13 @@ class Order {
     await push(ref(db, 'orders'), orderData);
   }
 
-  static fetch(id: string) {
+  static fetch(id?: string) {
     const dbRef = ref(db);
-    return get(child(dbRef, `orders/${id}`)).then((snapshot) => {
+    const path = id ? `orders/${id}` : 'orders'
+
+    return get(child(dbRef, path)).then((snapshot) => {
       if (snapshot.exists()) {
-        const orderData = snapshot.val();
-        const orderItems: Product[] = orderData.items.map((item: any) => Product.fromJson(item));
-        return new Order(
-          orderItems,
-          orderData.date,
-          orderData.total,
-          orderData.status,
-          orderData.id,
-        );
+        return snapshot.val()
       }
     });
   }

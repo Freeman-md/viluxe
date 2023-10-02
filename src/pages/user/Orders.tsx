@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Order from '../../models/order';
-import { Product } from '../../models/product';
+import { Link, defer, json, useLoaderData } from 'react-router-dom';
+import OrderModel from '../../models/order';
+import { formatDateFromTimestamp, formatFirebaseData } from '../../utils';
 
 type OrderCardProps = {
-    order: Order;
+    order: OrderModel;
 }
 
 const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
@@ -25,11 +25,11 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
                     {showProducts ? '▲' : '▼'}
                 </button>
             </div>
-            <p className="text-gray-600 mb-2">Date: {order.date.toISOString()}</p>
+            <p className="text-gray-600 mb-2">Date: { formatDateFromTimestamp(order.date) }</p>
             {showProducts && (
                 <ul className="list-disc list-inside space-y-2">
                     {order.items.map((item, index) => (
-                        <Link to="/products/1" key={item.id} className="flex items-center space-x-4">
+                        <Link to={`/products/${item.id}`} key={index} className="flex items-center space-x-4">
                             <img
                                 src={item.image}
                                 alt={item.title}
@@ -49,7 +49,9 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
     );
 };
 const OrdersPage: React.FC = () => {
-    const orders: Order[] = []
+    const { orders } = useLoaderData() as {
+        orders: OrderModel[]
+    }
 
     return (
         <div className="container mx-auto p-4">
@@ -68,3 +70,15 @@ const OrdersPage: React.FC = () => {
 };
 
 export default OrdersPage
+
+export const loader = async () => {
+    try {
+        const orders = await OrderModel.fetch()
+
+        return defer({
+            orders: formatFirebaseData(orders)
+        })
+    } catch (error: any) {
+        throw json({ message: error.message })
+    }
+}
