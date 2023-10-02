@@ -1,5 +1,5 @@
-import { CardElement, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { FormEvent, useEffect } from "react";
+import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { FormEvent } from "react";
 import InfoCard from "./InfoCard";
 import CopyToClipboard from "./CopyToClipboard";
 import { useAppSelector } from "../hooks/useReduxHooks";

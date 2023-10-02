@@ -55,9 +55,6 @@ const CartPage: React.FC = () => {
 
       await dispatch(createStripePaymentIntent({
         amount: cartItems.reduce((total, item) => total + item.price, 0) * 100,
-        metadata: {
-          cart: JSON.stringify(cartItems.map(item => ({ id: item.id, title: item.title, image: item.image, price: item.price }))),
-        }
       }))
 
       navigate('/checkout')

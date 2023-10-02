@@ -1,14 +1,14 @@
 import { AppDispatch } from "../../types";
 import { setClientSecret } from "./shopping-slice";
 
-export const createStripePaymentIntent = ({ amount, metadata }: { amount: number, metadata: object }) => {
+export const createStripePaymentIntent = ({ amount }: { amount: number }) => {
   return async (dispatch: AppDispatch) => {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/create-payment-intent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ amount, metadata }),
+        body: JSON.stringify({ amount }),
       });
 
       if (!response.ok) {
