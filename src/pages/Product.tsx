@@ -1,13 +1,13 @@
 import React, { Suspense } from 'react';
 import { Await, LoaderFunctionArgs, defer, json, useLoaderData } from 'react-router-dom';
 
-import { Product } from '../types';
 import RatingStars from '../components/RatingStars';
 import FavouriteButton from '../components/FavouriteButton';
 import ProductService from '../api/product-service';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks';
 import { toggleItemInCart, toggleItemInWishlist } from '../store/shopping/shopping-slice';
+import { Product } from '../models/product';
 
 type ProductLoaderDataProps = {
     product: Product

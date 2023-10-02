@@ -4,7 +4,7 @@ import { ReactComponent as StarSolid } from '../assets/svgs/star-solid.svg'
 import { ReactComponent as StarOutline } from '../assets/svgs/star-outline.svg'
 
 type RatingStarsProps = {
-    rating: {
+    rating?: {
         rate: number,
         count: number
     };
@@ -12,7 +12,7 @@ type RatingStarsProps = {
 
 const RatingStars: React.FC<RatingStarsProps> = ({ rating }) => {
     const stars = [];
-    const fullStars = Math.floor(rating.rate);
+    const fullStars = Math.floor(rating!.rate);
 
     for (let i = 1; i <= 5; i++) {
         if (i <= fullStars) {
@@ -24,7 +24,7 @@ const RatingStars: React.FC<RatingStarsProps> = ({ rating }) => {
 
     return <div className='flex items-center'>
         <div className='inline-flex items-center'>{stars}</div>
-        <span className="text-gray-500 font-medium ml-1">({rating.count})</span>
+        <span className="text-gray-500 font-medium ml-1">({rating!.count})</span>
     </div>;
 };
 

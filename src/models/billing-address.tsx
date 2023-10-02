@@ -1,6 +1,5 @@
 import { db } from "../config/firebase";
-import { child, get, onValue, push, ref, remove, set, update } from "firebase/database";
-import store from "../store";
+import { child, get, push, ref, remove, update } from "firebase/database";
 
 
 class BillingAddress {

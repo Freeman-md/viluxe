@@ -1,12 +1,12 @@
 import React from 'react';
 import { AnimatePresence, motion } from "framer-motion";
 
-import { Product } from '../types';
 import ProductCard from '../components/ProductCard';
 import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks';
 import { toggleItemInWishlist } from '../store/shopping/shopping-slice';
 import Empty from '../components/Empty';
 import { fadeInList, slideInListItem } from '../utils/framer-motion';
+import { Product } from '../models/product';
 
 const WishlistPage: React.FC = () => {
     const dispatch = useAppDispatch()

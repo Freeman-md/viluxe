@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Order } from '../../types';
 import { Link } from 'react-router-dom';
+import Order from '../../models/order';
+import { Product } from '../../models/product';
 
 type OrderCardProps = {
     order: Order;
@@ -24,11 +25,11 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
                     {showProducts ? '▲' : '▼'}
                 </button>
             </div>
-            <p className="text-gray-600 mb-2">Date: {order.date}</p>
+            <p className="text-gray-600 mb-2">Date: {order.date.toISOString()}</p>
             {showProducts && (
                 <ul className="list-disc list-inside space-y-2">
                     {order.items.map((item, index) => (
-                        <Link to="/products/1" key={index} className="flex items-center space-x-4">
+                        <Link to="/products/1" key={item.id} className="flex items-center space-x-4">
                             <img
                                 src={item.image}
                                 alt={item.title}
@@ -48,44 +49,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
     );
 };
 const OrdersPage: React.FC = () => {
-    const orders = [
-        {
-            id: 1,
-            date: '2023-08-25',
-            items: Array.from({ length: 2 }).map((_, index) => ({
-                id: index + 1,
-                title: "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
-                price: 109.95,
-                description:
-                    "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
-                category: "men's clothing",
-                image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-                rating: {
-                    rate: 3.9,
-                    count: 120,
-                },
-            })),
-            total: 44.98,
-        },
-        {
-            id: 2,
-            date: '2023-08-23',
-            items: Array.from({ length: 3 }).map((_, index) => ({
-                id: index + 1,
-                title: "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
-                price: 109.95,
-                description:
-                    "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
-                category: "men's clothing",
-                image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-                rating: {
-                    rate: 3.9,
-                    count: 120,
-                },
-            })),
-            total: 32.97,
-        },
-    ]
+    const orders: Order[] = []
 
     return (
         <div className="container mx-auto p-4">

@@ -1,10 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-import { Product } from '../types';
 import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks';
 import { toggleItemInCart } from '../store/shopping/shopping-slice';
 import Empty from '../components/Empty';
+import { createStripePaymentIntent } from '../store/shopping/shopping-actions';
+import { Product } from '../models/product';
 
 type CartItemProps = {
   product: Product;
@@ -33,6 +34,7 @@ const CartItem: React.FC<CartItemProps> = ({ product, onRemove }) => {
 };
 
 const CartPage: React.FC = () => {
+  const navigate = useNavigate()
   const dispatch = useAppDispatch();
 
   const cartItems = useAppSelector((state) => state.shopping.cart);
@@ -41,6 +43,22 @@ const CartPage: React.FC = () => {
     // Dispatch an action to remove the item from the cart
     dispatch(toggleItemInCart({ item: product }));
   };
+
+  // initialize payment
+  const checkoutHandler = () => {
+    try {
+      dispatch(createStripePaymentIntent({
+        amount: cartItems.reduce((total, item) => total + item.price, 0) * 100,
+        metadata: {
+          cart: JSON.stringify(cartItems.map(item => ({ id: item.id, title: item.title, image: item.image, price: item.price }))),
+        }
+      }))
+
+      navigate('/checkout')
+    } catch (error: any) {
+      console.log('Error creating payment intent: ', error)
+    }
+  }
 
   return (
     <div className="container mx-auto py-8">
@@ -51,9 +69,9 @@ const CartPage: React.FC = () => {
         <div className="space-y-4">
           <div className="sticky top-[4.2rem] sm:top-20 flex items-center justify-between bg-white py-2">
             <h2 className="text-xl font-medium">{cartItems.length} items</h2>
-            <Link to="/checkout" className="bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark">
+            <button onClick={checkoutHandler} className="bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark">
               Checkout
-            </Link>
+            </button>
           </div>
           {cartItems.map((item) => (
             <CartItem

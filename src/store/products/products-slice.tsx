@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Product } from "../../types";
+import { Product } from "../../models/product";
 
 type ProductsSliceStateProps = {
     products: Product[];

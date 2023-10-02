@@ -7,11 +7,11 @@ import ProductCard from "../components/ProductCard"
 import ProductService from "../api/product-service";
 import LoadingSpinner from "../components/LoadingSpinner";
 import useProductFilters from "../hooks/useProductFilters";
-import { Product } from "../types";
 import { useAppDispatch, useAppSelector } from "../hooks/useReduxHooks";
 import { toggleItemInCart, toggleItemInWishlist } from "../store/shopping/shopping-slice";
 import { ReactComponent as ShoppingCart } from '../assets/svgs/shopping-cart.svg'
 import { ReactComponent as Check } from '../assets/svgs/check.svg'
+import { Product } from "../models/product";
 
 type HomeLoaderDataProps = {
   categories: Array<string>,

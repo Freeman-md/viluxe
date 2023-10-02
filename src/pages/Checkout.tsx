@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Elements } from '@stripe/react-stripe-js';
@@ -7,23 +7,18 @@ import { StripeElementsOptionsClientSecret, loadStripe } from '@stripe/stripe-js
 import CheckoutForm from '../components/CheckoutForm';
 import BillingAddressList from '../components/BillingAddressList';
 import InfoCard from '../components/InfoCard';
-import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks';
-import { createStripePaymentIntent } from '../store/shopping/shopping-actions';
+import { useAppSelector } from '../hooks/useReduxHooks';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_KEY!)
 
 const Checkout: React.FC = () => {
-    const dispatch = useAppDispatch()
-
     const [options, setOptions] = useState<StripeElementsOptionsClientSecret>({})
 
     const { billingAddresses: addresses } = useLoaderData() as {
         billingAddresses: []
     }
     const clientSecret = useAppSelector(state => state.shopping.stripe.clientSecret)
-    const cart = useAppSelector(state => state.shopping.cart)
-    const cartTotal = cart.reduce((total, item) => total + item.price, 0) * 100
 
     const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState<'billing' | 'payment'>('billing');
@@ -31,18 +26,6 @@ const Checkout: React.FC = () => {
     if (clientSecret && Object.keys(options).length === 0) {
         setOptions(() => ({ clientSecret }))
     }
-
-    // create payment intent to initialize payment
-    useEffect(() => {
-        try {
-            dispatch(createStripePaymentIntent({
-                amount: cartTotal,
-                metadata: cart,
-            }))
-        } catch (error: any) {
-            console.log('Error creating payment intent: ', error)
-        }
-    }, [dispatch, cartTotal, cart])
 
     const handleTabClick = (step: 'billing' | 'payment') => {
         setActiveTab(step);

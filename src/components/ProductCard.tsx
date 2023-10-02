@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Product } from '../types';
 import RatingStars from './RatingStars';
 import FavouriteButton from './FavouriteButton';
+import { Product } from '../models/product';
 
 type ProductCardProps = {
     product: Product;

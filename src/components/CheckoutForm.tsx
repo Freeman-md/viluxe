@@ -24,7 +24,7 @@ const CheckoutForm = () => {
             elements,
             clientSecret,
             confirmParams: {
-                return_url: `${process.env.REACT_APP_URL}/checkout`
+                return_url: `${process.env.REACT_APP_URL}/payment`
             },
         });
 
