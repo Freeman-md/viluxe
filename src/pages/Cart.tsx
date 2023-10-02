@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks';
@@ -38,6 +38,7 @@ const CartPage: React.FC = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch();
 
+  const [isLoading, setIsLoading] = useState(false)
   const cartItems = useAppSelector((state) => state.shopping.cart);
 
   const removeItemFromCartHandler = (product: Product) => {
@@ -48,6 +49,10 @@ const CartPage: React.FC = () => {
   // initialize payment
   const checkoutHandler = async () => {
     try {
+      if (isLoading) return
+
+      setIsLoading(true)
+
       await dispatch(createStripePaymentIntent({
         amount: cartItems.reduce((total, item) => total + item.price, 0) * 100,
         metadata: {
@@ -57,6 +62,8 @@ const CartPage: React.FC = () => {
 
       navigate('/checkout')
     } catch (error: any) {
+      setIsLoading(false)
+
       console.log('Error creating payment intent: ', error)
     }
   }
@@ -71,7 +78,7 @@ const CartPage: React.FC = () => {
           <div className="sticky top-[4.2rem] sm:top-20 flex items-center justify-between bg-white py-2">
             <h2 className="text-xl font-medium">{cartItems.length} items</h2>
             <button onClick={checkoutHandler} className="bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark">
-              Checkout
+              { !isLoading ? 'Checkout' : <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-white"></div> }
             </button>
           </div>
           {cartItems.map((item) => (
