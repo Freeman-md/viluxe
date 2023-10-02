@@ -91,10 +91,10 @@ const HomePage: React.FC = () => {
     if (sortOption) {
       switch (sortOption) {
         case 'asc':
-          modifiedProducts.sort((a, b) => a.title.localeCompare(b.title));
+          modifiedProducts.sort((a, b) => a.title < b.title ? -1 : a.title > b.title ? 1 : 0);
           break;
         case 'desc':
-          modifiedProducts.sort((a, b) => b.title.localeCompare(a.title));
+          modifiedProducts.sort((a, b) => b.title < a.title ? -1 : b.title > a.title ? 1 : 0);
           break;
         case '-price':
           modifiedProducts.sort((a, b) => a.price - b.price);
