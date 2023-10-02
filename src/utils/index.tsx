@@ -22,8 +22,18 @@ export const formatDateFromTimestamp = (timestamp: Date) => {
   const date = new Date(timestamp);
 
   // Format the date as a string in a desired format (e.g., YYYY-MM-DD)
-  const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  const formattedDateTime = `${date.getFullYear()}-${
+    String(date.getMonth() + 1).padStart(2, '0')
+  }-${
+    String(date.getDate()).padStart(2, '0')
+  } ${
+    String(date.getHours()).padStart(2, '0')
+  }:${
+    String(date.getMinutes()).padStart(2, '0')
+  }:${
+    String(date.getSeconds()).padStart(2, '0')
+  }`;
 
-  return formattedDate
+  return formattedDateTime
 
 }
